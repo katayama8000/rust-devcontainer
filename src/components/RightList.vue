@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { ref } from "vue";
 import { computed } from "@vue/reactivity";
 import { useStore } from "vuex";
 import { key } from "../store";
@@ -19,13 +18,20 @@ const rightItems = computed<string[]>(() => {
 </script>
 
 <template>
-  <div class="w-1/2">
-    <h1>{{ msg }}</h1>
-    <h1>left</h1>
-    <div v-for="item in rightItems" :key="item">
-      {{ item }}
+  <div>
+    <div class="w-[300px] border-navy text-center">
+      <div v-for="item in rightItems" :key="item">
+        <div class="p-1">
+          {{ item }}
+        </div>
+      </div>
     </div>
-    <button @click="moveRightToLeft" class="bg-purple-200">左に移動</button>
+    <button
+      @click="moveRightToLeft"
+      class="bg-purple-200 w-[150px] text-center m-auto"
+    >
+      左に移動
+    </button>
   </div>
 </template>
 

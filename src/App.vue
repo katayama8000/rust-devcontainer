@@ -9,13 +9,9 @@ const store = useStore(key);
 </script>
 
 <template>
-  <div class="flex w-max-[700px]">
-    <div class="w-1/2">
-      <leftList msg="leftList" />
-    </div>
-    <div class="w-1/2">
-      <rightList msg="rightList" />
-    </div>
+  <div class="flex w-[700px] m-auto justify-between mt-10">
+    <leftList msg="leftList" />
+    <rightList msg="rightList" />
   </div>
 </template>
 
