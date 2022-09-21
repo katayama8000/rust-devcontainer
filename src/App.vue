@@ -1,7 +1,8 @@
 <script setup lang="ts">
-// This starter template is using Vue 3 <script setup> SFCs
-// Check out https://vuejs.org/api/sfc-script-setup.html#script-setup
-import HelloWorld from './components/HelloWorld.vue'
+import { computed } from "@vue/reactivity";
+import { useStore } from "vuex";
+const store = useStore();
+const leftItems = computed<string[]>(() => store.state.leftItems);
 </script>
 
 <template>
@@ -13,7 +14,9 @@ import HelloWorld from './components/HelloWorld.vue'
       <img src="./assets/vue.svg" class="logo vue" alt="Vue logo" />
     </a>
   </div>
-  <HelloWorld msg="Vite + Vue" />
+  <div v-for="item in leftItems" :key="item">
+    {{ item }}
+  </div>
 </template>
 
 <style scoped>
