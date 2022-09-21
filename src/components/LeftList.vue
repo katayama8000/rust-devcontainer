@@ -16,7 +16,7 @@ const moveLeftToRight = (): void => {
 </script>
 
 <template>
-  <div class="w-1/2"></div>
+  <div class="w-1/2">
     <h1>{{ msg }}</h1>
     <h1>left</h1>
     <div v-for="item in leftItems" :key="item">
