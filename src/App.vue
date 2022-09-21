@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import { computed } from "@vue/reactivity";
 import { useStore } from "vuex";
-const store = useStore();
+import { key } from "./store";
+const store = useStore(key);
 const leftItems = computed<string[]>(() => store.state.leftItems);
 </script>
 
