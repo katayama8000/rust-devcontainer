@@ -9,3 +9,19 @@
 .bg-color-navy {
   background-color: navy;
 }
+
+.navy_underline {
+  position: relative;
+}
+
+.navy_underline ::after {
+  content: "";
+  display: block;
+  position: absolute;
+  left: 50%;
+  transform: translate(-50%);
+  bottom: -10px;
+  width: 80%;
+  height: 2px;
+  background-color: navy;
+}

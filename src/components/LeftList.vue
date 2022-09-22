@@ -16,17 +16,22 @@ const moveLeftToRight = (): void => {
 
 <template>
   <div>
-    <div v-if="leftItems.length > 0" class="w-[300px] border-navy text-center">
-      <div v-for="item in leftItems" :key="item">
-        <div class="p-1">
-          {{ item }}
+    <div
+      v-if="leftItems.length > 0"
+      class="w-[300px] border-navy text-center pb-6"
+    >
+      <div v-for="item in leftItems" :key="item" class="mt-2">
+        <div class="p-1 navy_underline">
+          <span class="font-bold text-xl">
+            {{ item }}
+          </span>
         </div>
       </div>
     </div>
     <div class="m-auto w-[150px] mt-[30px]">
       <button
         @click="moveLeftToRight"
-        class="bg-purple-200 w-[150px] text-center h-[40px]"
+        class="bg-purple-200 w-[150px] text-center h-[40px] bg-color-navy text-white"
       >
         右に移動
       </button>
