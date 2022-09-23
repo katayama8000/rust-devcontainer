@@ -2,7 +2,7 @@
 import { computed } from "@vue/reactivity";
 import { useStore } from "vuex";
 import { key } from "../store";
-defineProps<{ msg: string }>();
+
 const store = useStore(key);
 //leftItems
 const leftItems = computed<string[]>(() => {
@@ -20,9 +20,9 @@ const moveLeftToRight = (): void => {
       v-if="leftItems.length > 0"
       class="w-[300px] border-navy text-center pb-6"
     >
-      <div v-for="item in leftItems" :key="item" class="mt-2">
+      <div v-for="item in leftItems" :key="item" class="mt-4">
         <div class="p-1 navy_underline">
-          <span class="font-bold text-xl">
+          <span class="text-[16px]">
             {{ item }}
           </span>
         </div>
@@ -31,7 +31,7 @@ const moveLeftToRight = (): void => {
     <div class="m-auto w-[150px] mt-[30px]">
       <button
         @click="moveLeftToRight"
-        class="bg-purple-200 w-[150px] text-center h-[40px] bg-color-navy text-white"
+        class="w-[150px] text-center h-[40px] bg-color-navy text-white"
       >
         右に移動
       </button>
