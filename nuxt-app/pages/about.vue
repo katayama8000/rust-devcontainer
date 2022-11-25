@@ -1,7 +1,7 @@
 <template>
   <div>
-    <h1>This is a indexPage</h1>
-    <NuxtLink to="/about">AboutPage</NuxtLink>
+    <h1>This is an about</h1>
+    <NuxtLink to="/">IndextPage</NuxtLink>
   </div>
 </template>
 
@@ -9,6 +9,6 @@
 import Vue from 'vue'
 
 export default Vue.extend({
-  name: 'IndexPage',
+  name: 'AboutPage',
 })
 </script>
