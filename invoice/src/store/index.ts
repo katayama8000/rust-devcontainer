@@ -59,7 +59,11 @@ export const store = createStore<State>({
       state.currentInvoiceArray = state.invoiceData.filter((invoice) => {
         return invoice.invoiceId === payload;
       });
-      console.log("こここここここ", state.currentInvoiceArray[0], payload);
+      console.log(
+        "invoiceDataにデータが必要だよ",
+        state.currentInvoiceArray[0],
+        payload
+      );
     },
     TOGGLE_EDIT_INVOICE(state) {
       state.editInvoice = !state.editInvoice;
