@@ -8,16 +8,17 @@ import router from "../router/index";
 import { getAuth } from "firebase/auth";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { createUserWithEmailAndPassword } from "firebase/auth";
+import type { invoiceType } from "@/types/invoice.model";
 
 // ストアのステートに対して型を定義
 export interface State {
-  invoiceData: any;
+  invoiceData: invoiceType[];
   invoiceModal: boolean;
   modalActive: boolean;
   invoicesLoaded: boolean;
-  currentInvoiceArray: any;
+  currentInvoiceArray: invoiceType[];
   editInvoice: boolean;
-  idToken: null;
+  idToken: string | null;
   detailText: null;
 }
 
@@ -31,7 +32,7 @@ export const store = createStore<State>({
       invoiceModal: false,
       modalActive: false,
       invoicesLoaded: false,
-      currentInvoiceArray: null,
+      currentInvoiceArray: [],
       editInvoice: false,
       idToken: null,
       detailText: null,
@@ -48,60 +49,45 @@ export const store = createStore<State>({
     TOGGLE_MODAL(state) {
       state.modalActive = !state.modalActive;
     },
-    SET_INVOICE_DATA(state, payload) {
+    SET_INVOICE_DATA(state, payload: invoiceType) {
       state.invoiceData.push(payload);
     },
     INVOICES_LOADED(state) {
       state.invoicesLoaded = true;
     },
-    SET_CURRENT_INVOICE(state, payload) {
-      state.currentInvoiceArray = state.invoiceData.filter(
-        (invoice: { invoiceId: any }) => {
-          return invoice.invoiceId === payload;
-        }
-      );
+    SET_CURRENT_INVOICE(state, payload: invoiceType["invoiceId"]) {
+      state.currentInvoiceArray = state.invoiceData.filter((invoice) => {
+        return invoice.invoiceId === payload;
+      });
     },
     TOGGLE_EDIT_INVOICE(state) {
       state.editInvoice = !state.editInvoice;
     },
-    DELETE_INVOICE(state, payload) {
+    DELETE_INVOICE(state, payload: invoiceType["docId"]) {
       //削除されたデータを抜いて新しいstateを作成
       state.invoiceData = state.invoiceData.filter(
-        (invoice: { docId: any }) => invoice.docId !== payload
+        (invoice) => invoice.docId !== payload
       );
     },
-    UPDATE_STATUS_TO_PAID(state, payload) {
-      state.invoiceData.forEach(
-        (invoice: {
-          docId: any;
-          invoicePaid: boolean;
-          invoicePending: boolean;
-        }) => {
-          if (invoice.docId === payload) {
-            invoice.invoicePaid = true;
-            invoice.invoicePending = false;
-          }
+    UPDATE_STATUS_TO_PAID(state, payload: invoiceType["docId"]) {
+      state.invoiceData.forEach((invoice) => {
+        if (invoice.docId === payload) {
+          invoice.invoicePaid = true;
+          invoice.invoicePending = false;
         }
-      );
+      });
     },
-    UPDATE_STATUS_TO_PENDING(state, payload) {
-      state.invoiceData.forEach(
-        (invoice: {
-          docId: any;
-          invoicePaid: boolean;
-          invoicePending: boolean;
-          invoiceDraft: boolean;
-        }) => {
-          if (invoice.docId === payload) {
-            invoice.invoicePaid = false;
-            invoice.invoicePending = true;
-            invoice.invoiceDraft = false;
-          }
+    UPDATE_STATUS_TO_PENDING(state, payload: invoiceType["docId"]) {
+      state.invoiceData.forEach((invoice) => {
+        if (invoice.docId === payload) {
+          invoice.invoicePaid = false;
+          invoice.invoicePending = true;
+          invoice.invoiceDraft = false;
         }
-      );
+      });
     },
 
-    upDataIdToken(state, idToken) {
+    upDataIdToken(state, idToken: string) {
       state.idToken = idToken;
     },
   },
@@ -109,12 +95,8 @@ export const store = createStore<State>({
     async GET_INVOICES({ commit, state }) {
       const results = await getDocs(collection(db, "invoice"));
       results.forEach((doc) => {
-        if (
-          !state.invoiceData.some(
-            (invoice: { docId: string }) => invoice.docId === doc.id
-          )
-        ) {
-          const data = {
+        if (!state.invoiceData.some((invoice) => invoice.docId === doc.id)) {
+          const data: invoiceType = {
             docId: doc.id,
             invoiceId: doc.data().invoiceId,
             billerStreetAddress: doc.data().billerStreetAddress,
@@ -139,13 +121,17 @@ export const store = createStore<State>({
             invoiceDraft: doc.data().invoiceDraft,
             invoicePaid: doc.data().invoicePaid,
           };
+          console.log(data, "this is data");
           commit("SET_INVOICE_DATA", data);
         }
       });
       commit("INVOICES_LOADED");
     },
 
-    async UPDATE_INVOICE({ commit, dispatch }, { docId, routeId }) {
+    async UPDATE_INVOICE(
+      { commit, dispatch },
+      { docId, routeId }: { docId: invoiceType["docId"]; routeId: string }
+    ): Promise<void> {
       commit("DELETE_INVOICE", docId);
       await dispatch("GET_INVOICES");
       commit("TOGGLE_INVOICE");
@@ -153,12 +139,12 @@ export const store = createStore<State>({
       commit("SET_CURRENT_INVOICE", routeId);
     },
 
-    async DELETE_INVOICE({ commit }, docId) {
+    async DELETE_INVOICE({ commit }, docId: invoiceType["docId"]) {
       await deleteDoc(doc(db, "invoice", docId));
       commit("DELETE_INVOICE", docId);
     },
 
-    async UPDATE_STATUS_TO_PAID({ commit }, docId) {
+    async UPDATE_STATUS_TO_PAID({ commit }, docId: invoiceType["docId"]) {
       const getInvoice = doc(db, "invoice", docId);
       await updateDoc(getInvoice, {
         invoicePaid: true,
@@ -167,7 +153,7 @@ export const store = createStore<State>({
       commit("UPDATE_STATUS_TO_PAID", docId);
     },
 
-    async UPDATE_STATUS_TO_PENDING({ commit }, docId) {
+    async UPDATE_STATUS_TO_PENDING({ commit }, docId: invoiceType["docId"]) {
       const getInvoice = doc(db, "invoice", docId);
       await updateDoc(getInvoice, {
         invoicePaid: false,
@@ -177,7 +163,7 @@ export const store = createStore<State>({
       commit("UPDATE_STATUS_TO_PENDING", docId);
     },
 
-    async signin({ commit }, authData) {
+    async signin({ commit }, authData: { email: string; password: string }) {
       const auth = getAuth();
       signInWithEmailAndPassword(auth, authData.email, authData.password)
         .then((userCredential) => {
@@ -192,7 +178,7 @@ export const store = createStore<State>({
         });
     },
 
-    signup({ commit }, authData) {
+    signup({ commit }, authData: { email: string; password: string }) {
       const auth = getAuth();
       createUserWithEmailAndPassword(auth, authData.email, authData.password)
         .then((userCredential) => {
@@ -209,7 +195,11 @@ export const store = createStore<State>({
 
     logout({ commit }) {
       commit("upDataIdToken", null);
-      router.replace("/login");
+      router.replace("/signin");
+    },
+
+    test() {
+      console.log("test");
     },
   },
 });
