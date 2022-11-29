@@ -170,7 +170,7 @@ We have provided a few built-in components like `<Tweet/>` and `<Youtube/>` that
 ```
 
 <!-- ./components/Counter.vue -->
-<Counter :count="10" m="t-4" />
+<Counter :count="30" m="t-4" />
 
 Check out [the guides](https://sli.dev/builtin/components.html) for more.
 
