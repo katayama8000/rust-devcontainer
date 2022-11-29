@@ -8,6 +8,21 @@ const routes = [
       return await import("@/pages/Top.vue");
     },
   },
+  {
+    path: "/signup",
+    name: "signup",
+    component: () => import("@/pages/Signup.vue"),
+  },
+  {
+    path: "/signin",
+    name: "signin",
+    component: () => import("@/pages/Signin.vue"),
+  },
+  {
+    path: "/registerprofile",
+    name: "RegisterProfile",
+    component: () => import("@/pages/RegisterProfile.vue"),
+  },
 ];
 
 const router = createRouter({
