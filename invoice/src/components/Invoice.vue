@@ -5,7 +5,10 @@ defineProps<{ invoice: invoiceType }>();
 </script>
 
 <template>
-  <div class="invoice flex">
+  <router-link
+    class="invoice flex"
+    :to="{ name: 'Invoice', params: { invoiceId: invoice.invoiceId } }"
+  >
     <div class="left flex">
       <span class="tracking-number">#{{ invoice.invoiceId }}</span>
       <span class="due-date">{{ invoice.paymentDueDate }}</span>
@@ -29,7 +32,7 @@ defineProps<{ invoice: invoiceType }>();
         <img src="@/assets/icon-arrow-right.svg" alt="" />
       </div> -->
     </div>
-  </div>
+  </router-link>
 </template>
 
 <style lang="scss" scoped>

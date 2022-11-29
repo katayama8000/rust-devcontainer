@@ -9,6 +9,11 @@ const routes = [
     },
   },
   {
+    path: "/invoice/:invoiceId",
+    name: "Invoice",
+    component: () => import("@/pages/InvoiceView.vue"),
+  },
+  {
     path: "/signup",
     name: "signup",
     component: () => import("@/pages/Signup.vue"),
