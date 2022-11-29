@@ -30,7 +30,7 @@ const updateStatusToPaid = (docId: invoiceType["docId"]) => {
 };
 
 const updateStatusToPending = (docId: invoiceType["docId"]) => {
-  store.dispatch("UPDATE_STATUS_TO_PAID", docId);
+  store.dispatch("UPDATE_STATUS_TO_PENDING", docId);
 };
 </script>
 
@@ -43,7 +43,7 @@ const updateStatusToPending = (docId: invoiceType["docId"]) => {
     <div class="header flex">
       <div class="left flex">
         <span>Status</span>
-        <!-- <div
+        <div
           class="status-button flex"
           :class="{
             paid: currentInvoice?.invoicePaid,
@@ -54,7 +54,7 @@ const updateStatusToPending = (docId: invoiceType["docId"]) => {
           <span v-if="currentInvoice?.invoicePaid">Paid</span>
           <span v-if="currentInvoice?.invoiceDraft">Draft</span>
           <span v-if="currentInvoice?.invoicePending">Pending</span>
-        </div> -->
+        </div>
       </div>
       <!-- 請求書・編集・削除・支払い済み・すべてvuexで管理 -->
       <div class="right flex">
