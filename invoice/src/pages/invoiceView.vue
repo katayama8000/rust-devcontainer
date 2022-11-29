@@ -1,24 +1,60 @@
+<script setup lang="ts">
+import { mapActions, mapMutations, mapState } from "vuex";
+import { computed, ref } from "vue";
+import { useStore } from "vuex";
+import { useRoute } from "vue-router";
+import { key } from "@/store";
+import { invoiceType } from "@/types/invoice.model";
+
+const route = useRoute();
+const store = useStore(key);
+console.log(route.params.invoiceId, "route");
+const handleClick = () => {
+  console.log("handleClick");
+  store.commit("SET_CURRENT_INVOICE", route.params.invoiceId);
+  console.log(store.state.currentInvoiceArray[0], "currentInvoice");
+};
+
+const currentInvoice = computed(() => store.state.currentInvoiceArray[0]);
+console.log("currentInvoice", currentInvoice);
+const toggleEditInvoice = () => {
+  store.commit("TOGGLE_EDIT_INVOICE");
+};
+
+const deleteInvoice = (docId: invoiceType["docId"]) => {
+  store.dispatch("DELETE_INVOICE", docId);
+};
+
+const updateStatusToPaid = (docId: invoiceType["docId"]) => {
+  store.dispatch("UPDATE_STATUS_TO_PAID", docId);
+};
+
+const updateStatusToPending = (docId: invoiceType["docId"]) => {
+  store.dispatch("UPDATE_STATUS_TO_PAID", docId);
+};
+</script>
+
 <template>
-  <div v-if="currentInvoice" class="invoice-view container">
+  <h1 @click="handleClick" style="color: antiquewhite">click</h1>
+  <div class="invoice-view container">
     <router-link class="nav-link flex" :to="{ name: 'Home' }">
       <img src="@/assets/icon-arrow-left.svg" alt="" /> Go Back
     </router-link>
-    <!-- Header -->
     <div class="header flex">
       <div class="left flex">
         <span>Status</span>
-        <div
+        <!-- <div
           class="status-button flex"
           :class="{
-            paid: currentInvoice.invoicePaid,
-            draft: currentInvoice.invoiceDraft,
-            pending: currentInvoice.invoicePending,
+            paid: currentInvoice?.invoicePaid,
+            draft: currentInvoice?.invoiceDraft,
+            pending: currentInvoice?.invoicePending,
           }"
         >
-          <span v-if="currentInvoice.invoicePaid">Paid</span>
-          <span v-if="currentInvoice.invoiceDraft">Draft</span>
-          <span v-if="currentInvoice.invoicePending">Pending</span>
-        </div>
+          <span v-if="currentInvoice?.invoicePaid">Paid</span>
+          <span v-if="currentInvoice?.invoiceDraft">Draft</span>
+          <span v-if="currentInvoice?.invoicePending">Pending</span>
+        </div> -->
       </div>
       <!-- 請求書・編集・削除・支払い済み・すべてvuexで管理 -->
       <div class="right flex">
@@ -26,21 +62,21 @@
           Edit
         </button>
         <button
-          @click="deleteInvoice(currentInvoice.docId)"
+          @click="deleteInvoice(currentInvoice!.docId)"
           class="red p-2 m-2"
         >
           Delete
         </button>
         <button
-          @click="updateStatusToPaid(currentInvoice.docId)"
-          v-if="currentInvoice.invoicePending"
+          @click="updateStatusToPaid(currentInvoice!.docId)"
+          v-if="currentInvoice?.invoicePending"
           class="green p-2 m-2"
         >
           Mark as Paid
         </button>
         <button
-          v-if="currentInvoice.invoiceDraft || currentInvoice.invoicePaid"
-          @click="updateStatusToPending(currentInvoice.docId)"
+          v-if="currentInvoice?.invoiceDraft || currentInvoice?.invoicePaid"
+          @click="updateStatusToPending(currentInvoice!.docId)"
           class="orange p-2 m-2"
         >
           Mark as Pending
@@ -52,38 +88,38 @@
     <div class="invoice-details flex flex-column">
       <div class="top flex">
         <div class="left flex flex-column">
-          <p><span>#</span>{{ currentInvoice.invoiceId }}</p>
-          <p>{{ currentInvoice.productDescription }}</p>
+          <p><span>#</span>{{ currentInvoice?.invoiceId }}</p>
+          <p>{{ currentInvoice?.productDescription }}</p>
         </div>
         <div class="right flex flex-column">
-          <p>{{ currentInvoice.billerStreetAddress }}</p>
-          <p>{{ currentInvoice.billerCity }}</p>
-          <p>{{ currentInvoice.billerZipCode }}</p>
-          <p>{{ currentInvoice.billerCountry }}</p>
+          <p>{{ currentInvoice?.billerStreetAddress }}</p>
+          <p>{{ currentInvoice?.billerCity }}</p>
+          <p>{{ currentInvoice?.billerZipCode }}</p>
+          <p>{{ currentInvoice?.billerCountry }}</p>
         </div>
       </div>
       <div class="middle flex">
         <div class="payment flex flex-column">
           <h4>Invoice Date</h4>
           <p>
-            {{ currentInvoice.invoiceDate }}
+            {{ currentInvoice?.invoiceDate }}
           </p>
           <h4>Payment Date</h4>
           <p>
-            {{ currentInvoice.paymentDueDate }}
+            {{ currentInvoice?.paymentDueDate }}
           </p>
         </div>
         <div class="bill flex flex-column">
           <h4>Bill To</h4>
-          <p>{{ currentInvoice.clientName }}</p>
-          <p>{{ currentInvoice.clientStreetAddress }}</p>
-          <p>{{ currentInvoice.clientCity }}</p>
-          <p>{{ currentInvoice.clientZipCode }}</p>
-          <p>{{ currentInvoice.clientCountry }}</p>
+          <p>{{ currentInvoice?.clientName }}</p>
+          <p>{{ currentInvoice?.clientStreetAddress }}</p>
+          <p>{{ currentInvoice?.clientCity }}</p>
+          <p>{{ currentInvoice?.clientZipCode }}</p>
+          <p>{{ currentInvoice?.clientCountry }}</p>
         </div>
         <div class="send-to flex flex-column">
           <h4>Sent To</h4>
-          <p>{{ currentInvoice.clientEmail }}</p>
+          <p>{{ currentInvoice?.clientEmail }}</p>
         </div>
       </div>
       <div class="bottom flex flex-column">
@@ -95,7 +131,7 @@
             <p>Total</p>
           </div>
           <div
-            v-for="(item, index) in currentInvoice.invoiceItemList"
+            v-for="(item, index) in currentInvoice?.invoiceItemList"
             :key="index"
             class="item flex"
           >
@@ -107,74 +143,12 @@
         </div>
         <div class="total flex">
           <p>Amount Due</p>
-          <p>{{ currentInvoice.invoiceTotal }}</p>
+          <p>{{ currentInvoice?.invoiceTotal }}</p>
         </div>
       </div>
     </div>
   </div>
 </template>
-
-<script>
-import { mapActions, mapMutations, mapState } from "vuex";
-export default {
-  name: "invoiceView",
-  data() {
-    return {
-      currentInvoice: null,
-    };
-  },
-  created() {
-    this.getCurrentInvoice();
-  },
-  methods: {
-    ...mapMutations([
-      "SET_CURRENT_INVOICE",
-      "TOGGLE_EDIT_INVOICE",
-      "TOGGLE_INVOICE",
-    ]),
-
-    ...mapActions([
-      "DELETE_INVOICE",
-      "UPDATE_STATUS_TO_PENDING",
-      "UPDATE_STATUS_TO_PAID",
-    ]),
-
-    //読み込み時にデータを取得
-    getCurrentInvoice() {
-      this.SET_CURRENT_INVOICE(this.$route.params.invoiceId);
-      this.currentInvoice = this.currentInvoiceArray[0];
-    },
-
-    toggleEditInvoice() {
-      this.TOGGLE_EDIT_INVOICE();
-      this.TOGGLE_INVOICE();
-    },
-
-    async deleteInvoice(docId) {
-      await this.DELETE_INVOICE(docId);
-      this.$router.push({ name: "Home" });
-    },
-
-    updateStatusToPaid(docId) {
-      this.UPDATE_STATUS_TO_PAID(docId);
-    },
-
-    updateStatusToPending(docId) {
-      this.UPDATE_STATUS_TO_PENDING(docId);
-    },
-  },
-  computed: {
-    ...mapState(["currentInvoiceArray", "editInvoice"]),
-  },
-  watch: {
-    editInvoice() {
-      if (!this.editInvoice) {
-        this.currentInvoice = this.currentInvoiceArray[0];
-      }
-    },
-  },
-};
-</script>
 
 <style lang="scss" scoped>
 .invoice-view {
