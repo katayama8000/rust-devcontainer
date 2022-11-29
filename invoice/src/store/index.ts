@@ -19,7 +19,6 @@ export interface State {
   currentInvoiceArray: invoiceType[];
   editInvoice: boolean;
   idToken: string | null;
-  detailText: null;
 }
 
 // インジェクションキーを定義
@@ -35,12 +34,12 @@ export const store = createStore<State>({
       currentInvoiceArray: [],
       editInvoice: false,
       idToken: null,
-      detailText: null,
     };
   },
 
   getters: {
     idToken: (state) => state.idToken,
+    getInvoiceData: (state) => state.invoiceData,
   },
   mutations: {
     TOGGLE_INVOICE(state) {
