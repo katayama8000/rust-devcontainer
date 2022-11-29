@@ -3,9 +3,9 @@ import { createRouter, createWebHistory } from "vue-router";
 const routes = [
   {
     path: "/",
-    name: "top",
+    name: "Home",
     component: async () => {
-      return await import("@/pages/Top.vue");
+      return await import("@/pages/Home.vue");
     },
   },
   {

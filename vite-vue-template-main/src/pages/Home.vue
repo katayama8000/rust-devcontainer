@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref } from "vue";
 
-const text = ref("TOPページ");
+const text = ref("Home");
 </script>
 
 <template>
