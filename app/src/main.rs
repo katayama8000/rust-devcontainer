@@ -1,4 +1,3 @@
-
 // from と try_from
 
 use std::convert::TryFrom;
@@ -8,7 +7,7 @@ struct Person {
     age: i32,
 }
 
-impl From <&str> for Person {
+impl From<&str> for Person {
     fn from(s: &str) -> Self {
         let mut split = s.split(",");
         Person {
@@ -41,5 +40,4 @@ fn main() {
         Ok(p) => println!("name: {}, age: {}", p.name, p.age),
         Err(e) => println!("Error: {}", e),
     }
-
 }
