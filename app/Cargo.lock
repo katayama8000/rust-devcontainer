@@ -5,3 +5,12 @@ version = 3
 [[package]]
 name = "app"
 version = "0.1.0"
+dependencies = [
+ "lib_demo",
+]
+
+[[package]]
+name = "lib_demo"
+version = "0.1.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "57da1c5fc477c04ee56106623bd07a2473131bae43b87b360f5a97b63f1dc249"
