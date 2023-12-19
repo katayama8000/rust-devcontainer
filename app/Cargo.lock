@@ -32,6 +32,10 @@ version = "0.1.0"
 dependencies = [
  "expo_server_sdk",
  "lib_demo",
+ "mockito",
+ "reqwest",
+ "serde",
+ "serde_json",
  "tokio",
 ]
 
