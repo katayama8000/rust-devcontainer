@@ -10,7 +10,7 @@ async fn main() {
     let body = "sdk-test-body";
     let push_token = [
         "ExponentPushToken[GG5W7qB0nelNDkz5Y6A0sB]",
-        "ExponentPushToken[GG5W7qB0nelNDkz5Y6A0sB]",
+        "ExponentPushToken[GG5W7qB0nelNDkz5Y6A0s]",
     ];
     let ret = match push::push_message(&push_token, title, body).await {
         Ok(val) => val,

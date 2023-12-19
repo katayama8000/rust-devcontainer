@@ -93,7 +93,7 @@ pub async fn push_message(expo_push_tokens: &[&str], title: &str, body: &str) ->
         Ok(response) => {
             if response.status().is_success() {
                 print!("🔥 1 🔥");
-                let response = response.json::<ApiResponse>().await.map_err(|err| {
+                let response: Result<Value, Error> = response.json().await.map_err(|err| {
                     Error::DeserializeErr(format!(
                         "Failed to parse response body as ApiResponse: {:?}",
                         err
