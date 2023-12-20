@@ -1,3 +1,5 @@
+use std::clone;
+
 use reqwest::header::{HeaderMap, HeaderValue, CONTENT_TYPE};
 use serde::{Deserialize, Serialize};
 use serde_json::Value;
@@ -13,13 +15,13 @@ pub struct ResponseItem {
     pub id: String,
 }
 
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Clone)]
 pub enum SuperResponse {
     Ticket(PushTicket),
     Error(ErrorResponse),
 }
 
-#[derive(Debug, Deserialize, PartialEq, Serialize)]
+#[derive(Debug, Deserialize, PartialEq, Serialize, Clone)]
 pub struct ErrorResponse {
     pub status: String,
     pub message: String,
@@ -41,19 +43,17 @@ pub struct PushPayload<'a> {
     body: &'a str,
 }
 
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Clone)]
 pub struct PushTicket {
     pub status: String,
     pub id: String,
 }
 
-impl std::fmt::Display for PushTicket {
-    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        write!(f, "{{ status: {}, id: {} }}", self.status, self.id)
-    }
-}
-
-pub async fn push_message(expo_push_tokens: &[&str], title: &str, body: &str) -> Result<(), Error> {
+pub async fn push_message(
+    expo_push_tokens: &[&str],
+    title: &str,
+    body: &str,
+) -> Result<Vec<SuperResponse>, Error> {
     const URL: &str = "https://exp.host/--/api/v2/push/send";
     let mut headers = HeaderMap::new();
     headers.insert(CONTENT_TYPE, HeaderValue::from_static("application/json"));
@@ -102,30 +102,32 @@ pub async fn push_message(expo_push_tokens: &[&str], title: &str, body: &str) ->
 
                 print!("🔥 2 🔥");
                 println!("{:?}", response);
-                // let result: Vec<SuperResponse> = response
-                //     .unwrap()
-                //     .into_iter()
-                //     .map(|item| {
-                //         if item.status == "error" {
-                //             print!("🔥 3 🔥");
-                //             println!("{:?}", item);
-                //             SuperResponse::Error(ErrorResponse {
-                //                 status: item.status,
-                //                 message: String::new(), // Add a default value for message
-                //                 details: Value::Null,   // Add a default value for details
-                //             })
-                //         } else {
-                //             print!("🧊 3 🧊");
-                //             println!("{:?}", item);
-                //             SuperResponse::Ticket(PushTicket {
-                //                 status: "ok".to_string(),
-                //                 id: item.id.clone(),
-                //             })
-                //         }
-                //     })
-                //     .collect();
+                let result: Vec<SuperResponse> = response
+                    .unwrap()
+                    .get("data")
+                    .unwrap()
+                    .as_array()
+                    .unwrap()
+                    .into_iter()
+                    .map(|item| {
+                        if item["status"] == "error" {
+                            print!("🔥");
+                            SuperResponse::Error(ErrorResponse {
+                                status: item["status"].to_string(),
+                                message: String::new(), // Add a default value for message
+                                details: Value::Null,   // Add a default value for details
+                            })
+                        } else {
+                            print!("🧊");
+                            SuperResponse::Ticket(PushTicket {
+                                status: "ok".to_string(),
+                                id: item["id"].to_string(),
+                            })
+                        }
+                    })
+                    .collect();
 
-                Ok(())
+                Ok(result)
 
                 // let response = response.json::<Response>().await.map_err(|err| {
                 //     Error::DeserializeErr(format!(
