@@ -1,6 +1,5 @@
 use reqwest::header::{HeaderMap, HeaderValue, CONTENT_TYPE};
 use serde::{Deserialize, Serialize};
-use serde_json::Value;
 
 #[derive(Debug, Deserialize)]
 pub struct ApiResponse {
@@ -13,17 +12,28 @@ pub struct ResponseItem {
     pub id: String,
 }
 
-#[derive(Debug, Deserialize, PartialEq, Serialize, Clone)]
+#[derive(Debug, Serialize, Deserialize, Clone)]
+pub enum SuperResponse {
+    PushTicket(PushTicket),
+    ErrorResponse(ErrorResponse),
+}
+
+#[derive(Debug, Serialize, Deserialize, Clone)]
 pub struct ErrorResponse {
     pub status: String,
     pub message: String,
-    pub details: Value,
+    pub details: Details,
+}
+
+#[derive(Debug, Serialize, Deserialize, Clone, Default)]
+pub struct Details {
+    pub error: String,
 }
 
 #[derive(Debug, Deserialize, PartialEq)]
 pub enum Error {
     InvalidArgument(String),
-    ExpoErr(ErrorResponse),
+    ExpoErr(String),
     DeserializeErr(String),
     Others(String),
 }
@@ -42,17 +52,12 @@ pub struct PushTicket {
 }
 
 #[derive(Debug, Deserialize)]
-pub struct PushResult {
+struct PushResult {
     data: Vec<ResultEntry>,
 }
 
 #[derive(Debug, Deserialize)]
-pub struct Details {
-    error: String,
-}
-
-#[derive(Debug, Deserialize)]
-pub struct ResultEntry {
+struct ResultEntry {
     status: String,
     id: Option<String>,
     message: Option<String>,
@@ -63,7 +68,7 @@ pub async fn push_message(
     expo_push_tokens: &[&str],
     title: &str,
     body: &str,
-) -> Result<PushResult, Error> {
+) -> Result<Vec<SuperResponse>, Error> {
     const URL: &str = "https://exp.host/--/api/v2/push/send";
     let mut headers = HeaderMap::new();
     headers.insert(CONTENT_TYPE, HeaderValue::from_static("application/json"));
@@ -87,51 +92,56 @@ pub async fn push_message(
         return Err(Error::InvalidArgument("Body is empty".to_string()));
     }
 
-    let mut result_entries = Vec::new();
+    let payload = PushPayload {
+        to: expo_push_tokens,
+        title,
+        body,
+    };
 
     match client
         .post(URL)
         .headers(headers)
-        .json(&PushPayload {
-            to: expo_push_tokens,
-            title,
-            body,
-        })
+        .json(&payload)
         .send()
         .await
     {
         Ok(response) => {
             if response.status().is_success() {
-                for data in response.json::<PushResult>().await.unwrap().data {
-                    if data.status == "ok" {
-                        result_entries.push(ResultEntry {
-                            status: "ok".to_string(),
-                            id: Some(data.id.unwrap()),
-                            message: None,
-                            details: None,
-                        });
-                    } else {
-                        result_entries.push(ResultEntry {
-                            status: "error".to_string(),
-                            id: None,
-                            message: Some(data.message.unwrap()),
-                            details: Some(Details {
-                                error: data.details.unwrap().error,
-                            }),
-                        });
-                    }
-                }
-                Ok(PushResult {
-                    data: result_entries,
-                })
+                let result: Vec<SuperResponse> = response
+                    .json::<PushResult>()
+                    .await
+                    .map_err(|err| {
+                        Error::DeserializeErr(format!(
+                            "Failed to parse response body as PushResult: {:?}",
+                            err
+                        ))
+                    })?
+                    .data
+                    .into_iter()
+                    .map(|item| {
+                        if item.status == "error" {
+                            SuperResponse::ErrorResponse(ErrorResponse {
+                                status: item.status,
+                                message: item.message.unwrap_or_default(), // Use unwrap_or_default to provide a default value
+                                details: item.details.unwrap_or_default(), // Use unwrap_or_default to provide a default value
+                            })
+                        } else if item.status == "ok" {
+                            SuperResponse::PushTicket(PushTicket {
+                                status: "ok".to_string(),
+                                id: item.id.unwrap_or_default(), // Use unwrap_or_default to provide a default value
+                            })
+                        } else {
+                            unreachable!("Unknown status: {}", item.status)
+                        }
+                    })
+                    .collect();
+
+                Ok(result)
             } else {
-                let response = response.json::<ErrorResponse>().await.map_err(|err| {
-                    Error::DeserializeErr(format!(
-                        "Failed to parse response body as ErrorResponse: {:?}",
-                        err
-                    ))
-                })?;
-                Err(Error::ExpoErr(response))
+                Err(Error::ExpoErr(format!(
+                    "Failed to send request: {:?}",
+                    response
+                )))
             }
         }
         Err(err) => Err(Error::Others(format!("Failed to send request: {:?}", err))),
