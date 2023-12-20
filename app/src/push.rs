@@ -1,5 +1,3 @@
-use std::clone;
-
 use reqwest::header::{HeaderMap, HeaderValue, CONTENT_TYPE};
 use serde::{Deserialize, Serialize};
 use serde_json::Value;
@@ -13,12 +11,6 @@ pub struct ApiResponse {
 pub struct ResponseItem {
     pub status: String,
     pub id: String,
-}
-
-#[derive(Debug, Serialize, Deserialize, Clone)]
-pub enum SuperResponse {
-    Ticket(PushTicket),
-    Error(ErrorResponse),
 }
 
 #[derive(Debug, Deserialize, PartialEq, Serialize, Clone)]
@@ -49,11 +41,29 @@ pub struct PushTicket {
     pub id: String,
 }
 
+#[derive(Debug, Deserialize)]
+pub struct PushResult {
+    data: Vec<ResultEntry>,
+}
+
+#[derive(Debug, Deserialize)]
+pub struct Details {
+    error: String,
+}
+
+#[derive(Debug, Deserialize)]
+pub struct ResultEntry {
+    status: String,
+    id: Option<String>,
+    message: Option<String>,
+    details: Option<Details>,
+}
+
 pub async fn push_message(
     expo_push_tokens: &[&str],
     title: &str,
     body: &str,
-) -> Result<Vec<SuperResponse>, Error> {
+) -> Result<PushResult, Error> {
     const URL: &str = "https://exp.host/--/api/v2/push/send";
     let mut headers = HeaderMap::new();
     headers.insert(CONTENT_TYPE, HeaderValue::from_static("application/json"));
@@ -77,89 +87,44 @@ pub async fn push_message(
         return Err(Error::InvalidArgument("Body is empty".to_string()));
     }
 
-    let payload = PushPayload {
-        to: expo_push_tokens,
-        title,
-        body,
-    };
+    let mut result_entries = Vec::new();
 
     match client
         .post(URL)
         .headers(headers)
-        .json(&payload)
+        .json(&PushPayload {
+            to: expo_push_tokens,
+            title,
+            body,
+        })
         .send()
         .await
     {
         Ok(response) => {
             if response.status().is_success() {
-                print!("🔥 1 🔥");
-                let response: Result<Value, Error> = response.json().await.map_err(|err| {
-                    Error::DeserializeErr(format!(
-                        "Failed to parse response body as ApiResponse: {:?}",
-                        err
-                    ))
-                });
-
-                print!("🔥 2 🔥");
-                println!("{:?}", response);
-                let result: Vec<SuperResponse> = response
-                    .unwrap()
-                    .get("data")
-                    .unwrap()
-                    .as_array()
-                    .unwrap()
-                    .into_iter()
-                    .map(|item| {
-                        if item["status"] == "error" {
-                            print!("🔥");
-                            SuperResponse::Error(ErrorResponse {
-                                status: item["status"].to_string(),
-                                message: String::new(), // Add a default value for message
-                                details: Value::Null,   // Add a default value for details
-                            })
-                        } else {
-                            print!("🧊");
-                            SuperResponse::Ticket(PushTicket {
-                                status: "ok".to_string(),
-                                id: item["id"].to_string(),
-                            })
-                        }
-                    })
-                    .collect();
-
-                Ok(result)
-
-                // let response = response.json::<Response>().await.map_err(|err| {
-                //     Error::DeserializeErr(format!(
-                //         "Failed to parse response body as ApiResponse: {:?}",
-                //         err
-                //     ))
-                // })?;
-
-                // let result: Vec<Response> = response
-                //     .data
-                //     .into_iter()
-                //     .map(|item| {
-                //         if item.status == "error" {
-                //             print!("🔥");
-                //             Response::Error(ErrorResponse {
-                //                 status: item.status,
-                //                 message: String::new(), // Add a default value for message
-                //                 details: Value::Null,   // Add a default value for details
-                //             })
-                //         } else {
-                //             print!("🧊");
-                //             Response::Ticket(PushTicket {
-                //                 status: "ok".to_string(),
-                //                 id: item.id.clone(),
-                //             })
-                //         }
-                //     })
-                //     .collect();
-
-                // Ok(result)
+                for data in response.json::<PushResult>().await.unwrap().data {
+                    if data.status == "ok" {
+                        result_entries.push(ResultEntry {
+                            status: "ok".to_string(),
+                            id: Some(data.id.unwrap()),
+                            message: None,
+                            details: None,
+                        });
+                    } else {
+                        result_entries.push(ResultEntry {
+                            status: "error".to_string(),
+                            id: None,
+                            message: Some(data.message.unwrap()),
+                            details: Some(Details {
+                                error: data.details.unwrap().error,
+                            }),
+                        });
+                    }
+                }
+                Ok(PushResult {
+                    data: result_entries,
+                })
             } else {
-                print!("🧊");
                 let response = response.json::<ErrorResponse>().await.map_err(|err| {
                     Error::DeserializeErr(format!(
                         "Failed to parse response body as ErrorResponse: {:?}",
