@@ -2,13 +2,19 @@ use reqwest::header::{HeaderMap, HeaderValue, CONTENT_TYPE};
 use serde::{Deserialize, Serialize};
 
 #[derive(Debug, Serialize, Deserialize, Clone)]
-pub enum SuperResponse {
-    PushTicket(PushTicket),
-    ErrorResponse(ErrorResponse),
+pub enum PushTicket {
+    Success(PushSuccessTicket),
+    Error(PushErrorTicket),
 }
 
 #[derive(Debug, Serialize, Deserialize, Clone)]
-pub struct ErrorResponse {
+pub struct PushSuccessTicket {
+    pub status: String,
+    pub id: String,
+}
+
+#[derive(Debug, Serialize, Deserialize, Clone)]
+pub struct PushErrorTicket {
     pub status: String,
     pub message: String,
     pub details: Details,
@@ -22,9 +28,8 @@ pub struct Details {
 #[derive(Debug, Deserialize, PartialEq)]
 pub enum Error {
     InvalidArgument(String),
-    ExpoErr(String),
     DeserializeErr(String),
-    Others(String),
+    ServerErr(String),
 }
 
 #[derive(Debug, Serialize)]
@@ -32,12 +37,6 @@ pub struct PushPayload<'a> {
     to: &'a [&'a str],
     title: &'a str,
     body: &'a str,
-}
-
-#[derive(Debug, Serialize, Deserialize, Clone)]
-pub struct PushTicket {
-    pub status: String,
-    pub id: String,
 }
 
 #[derive(Debug, Deserialize)]
@@ -57,7 +56,7 @@ pub async fn push_message(
     expo_push_tokens: &[&str],
     title: &str,
     body: &str,
-) -> Result<Vec<SuperResponse>, Error> {
+) -> Result<Vec<PushTicket>, Error> {
     const URL: &str = "https://exp.host/--/api/v2/push/send";
     let mut headers = HeaderMap::new();
     headers.insert(CONTENT_TYPE, HeaderValue::from_static("application/json"));
@@ -96,26 +95,23 @@ pub async fn push_message(
     {
         Ok(response) => {
             if response.status().is_success() {
-                let result: Vec<SuperResponse> = response
+                Ok(response
                     .json::<PushResult>()
                     .await
                     .map_err(|err| {
-                        Error::DeserializeErr(format!(
-                            "Failed to parse response body as PushResult: {:?}",
-                            err
-                        ))
+                        Error::DeserializeErr(format!("Failed to deserialize response: {:?}", err))
                     })?
                     .data
                     .into_iter()
                     .map(|item| {
                         if item.status == "error" {
-                            SuperResponse::ErrorResponse(ErrorResponse {
+                            PushTicket::Error(PushErrorTicket {
                                 status: item.status,
                                 message: item.message.unwrap_or_default(), // Use unwrap_or_default to provide a default value
                                 details: item.details.unwrap_or_default(), // Use unwrap_or_default to provide a default value
                             })
                         } else if item.status == "ok" {
-                            SuperResponse::PushTicket(PushTicket {
+                            PushTicket::Success(PushSuccessTicket {
                                 status: "ok".to_string(),
                                 id: item.id.unwrap_or_default(), // Use unwrap_or_default to provide a default value
                             })
@@ -123,16 +119,17 @@ pub async fn push_message(
                             unreachable!("Unknown status: {}", item.status)
                         }
                     })
-                    .collect();
-
-                Ok(result)
+                    .collect())
             } else {
-                Err(Error::ExpoErr(format!(
+                Err(Error::ServerErr(format!(
                     "Failed to send request: {:?}",
                     response
                 )))
             }
         }
-        Err(err) => Err(Error::Others(format!("Failed to send request: {:?}", err))),
+        Err(err) => Err(Error::ServerErr(format!(
+            "Failed to send request: {:?}",
+            err
+        ))),
     }
 }
