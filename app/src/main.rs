@@ -12,10 +12,9 @@ async fn main() {
         "ExponentPushToken[GG5W7qB0nelNDkz5Y6A0sB]",
         "ExponentPushToken[GG5W7qB0nelNDkz5Y6A0s]",
     ];
-    let ret = match push::push_message(&push_token, title, body).await {
-        Ok(val) => val,
+    let answer: push::SuperResponse = match push::push_message(&push_token, title, body).await {
+        Ok(val) => val[0].clone(),
         Err(_e) => todo!(),
     };
-    println!("main.rs => {:?}", ret[0]);
-    // responseからstatusを取得する
+    answer;
 }
