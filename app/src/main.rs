@@ -1,5 +1,4 @@
 use lib_demo::{add, print_random_number};
-use serde_json::json;
 mod push;
 
 #[tokio::main]
@@ -17,5 +16,6 @@ async fn main() {
         Ok(val) => val,
         Err(_e) => todo!(),
     };
-    println!("main.rs => {:?}", ret);
+    println!("main.rs => {:?}", ret[0]);
+    // responseからstatusを取得する
 }

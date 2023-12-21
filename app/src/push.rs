@@ -1,24 +1,13 @@
 use reqwest::header::{HeaderMap, HeaderValue, CONTENT_TYPE};
 use serde::{Deserialize, Serialize};
 
-#[derive(Debug, Deserialize)]
-pub struct ApiResponse {
-    pub data: Vec<ResponseItem>,
-}
-
-#[derive(Debug, Deserialize)]
-pub struct ResponseItem {
-    pub status: String,
-    pub id: String,
-}
-
-#[derive(Debug, Serialize, Deserialize, Clone)]
+#[derive(Debug, Serialize, Deserialize)]
 pub enum SuperResponse {
     PushTicket(PushTicket),
     ErrorResponse(ErrorResponse),
 }
 
-#[derive(Debug, Serialize, Deserialize, Clone)]
+#[derive(Debug, Serialize, Deserialize)]
 pub struct ErrorResponse {
     pub status: String,
     pub message: String,
