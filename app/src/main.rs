@@ -1,20 +1,33 @@
 use lib_demo::{add, print_random_number};
+use push::{push_message, Error, SuperResponse};
 mod push;
 
 #[tokio::main]
 async fn main() {
-    println!("Hello, world!");
-    println!("1 + 2 = {}", add(1, 2));
-    print_random_number();
-    let title = "sdk-test-title";
-    let body = "sdk-test-body";
     let push_token = [
         "ExponentPushToken[GG5W7qB0nelNDkz5Y6A0sB]",
         "ExponentPushToken[GG5W7qB0nelNDkz5Y6A0s]",
     ];
-    let answer: push::SuperResponse = match push::push_message(&push_token, title, body).await {
-        Ok(val) => val[0].clone(),
-        Err(_e) => todo!(),
+    let title = "Hello";
+    let body = "World";
+
+    let ret: Result<Vec<String>, Error> = match push_message(&push_token, title, body).await {
+        Ok(super_responses) => {
+            let mut ids = Vec::new();
+            for super_response in super_responses {
+                match super_response {
+                    SuperResponse::PushTicket(push_ticket) => {
+                        println!("PushTicket: {:?}", push_ticket);
+                        ids.push(push_ticket.id);
+                    }
+                    SuperResponse::ErrorResponse(error_response) => {
+                        println!("Error: {:?}", error_response);
+                    }
+                }
+            }
+            Ok(ids)
+        }
+        Err(error) => Err(error),
     };
-    answer;
+    println!("ret: {:?}", ret.unwrap());
 }
