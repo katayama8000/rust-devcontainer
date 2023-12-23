@@ -45,6 +45,7 @@ dependencies = [
 name = "app"
 version = "0.1.0"
 dependencies = [
+ "expo_push_notification_client",
  "lib_demo",
  "mockito",
  "reqwest",
@@ -238,6 +239,19 @@ checksum = "a258e46cdc063eb8519c00b9fc845fc47bcfca4130e2f08e88665ceda8474245"
 dependencies = [
  "libc",
  "windows-sys 0.52.0",
+]
+
+[[package]]
+name = "expo_push_notification_client"
+version = "0.1.0"
+source = "git+https://github.com/katayama8000/expo-push-notification-client-rust?branch=rename#a400f528acdd2b7928799d6d0a3aa6cb399e3cd1"
+dependencies = [
+ "mockito",
+ "reqwest",
+ "serde",
+ "serde_json",
+ "serde_with",
+ "tokio",
 ]
 
 [[package]]

@@ -6,9 +6,9 @@ edition = "2021"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
+expo_push_notification_client = {git = "https://github.com/katayama8000/expo-push-notification-client-rust", branch="rename"}
 lib_demo = "0.1.0"
 tokio = {version = "1.35.0", features=["full"]}
-expo_server_sdk = {git = "https://github.com/katayama8000/expo-server-sdk-rust/", branch = "main"}
 mockito = "1.2.0"
 reqwest = { version = "0.11", features = ["json"] }
 serde = { version ="1.0.193", features = ["derive"]}
