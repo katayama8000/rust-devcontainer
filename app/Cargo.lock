@@ -244,12 +244,13 @@ dependencies = [
 [[package]]
 name = "expo_server_sdk"
 version = "0.1.0"
-source = "git+https://github.com/katayama8000/expo-server-sdk-rust/?branch=issue/#fix#754fe3ed86e8b85653c5a9fd4742e2431cbc8770"
+source = "git+https://github.com/katayama8000/expo-server-sdk-rust/?branch=issue/#fix#c906eb4a5d5e130942de146b6a9f8f5183d5a712"
 dependencies = [
  "mockito",
  "reqwest",
  "serde",
  "serde_json",
+ "serde_with",
  "tokio",
 ]
 
