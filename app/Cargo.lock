@@ -169,7 +169,7 @@ dependencies = [
 [[package]]
 name = "expo_server_sdk"
 version = "0.1.0"
-source = "git+https://github.com/katayama8000/expo-server-sdk-rust#36838cb7d630a6c7d9a8f6070945333f8242b5ac"
+source = "git+https://github.com/katayama8000/expo-server-sdk-rust/?branch=issue/#fix#8bb7ddf4d7b75cd274aef50a3333b6d50f99c4f4"
 dependencies = [
  "mockito",
  "reqwest",
