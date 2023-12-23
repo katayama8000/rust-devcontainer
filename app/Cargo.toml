@@ -8,7 +8,7 @@ edition = "2021"
 [dependencies]
 lib_demo = "0.1.0"
 tokio = {version = "1.35.0", features=["full"]}
-expo_server_sdk = {git = "https://github.com/katayama8000/expo-server-sdk-rust/", branch = "issue/#fix"}
+expo_server_sdk = {git = "https://github.com/katayama8000/expo-server-sdk-rust/", branch = "main"}
 mockito = "1.2.0"
 reqwest = { version = "0.11", features = ["json"] }
 serde = { version ="1.0.193", features = ["derive"]}

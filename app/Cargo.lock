@@ -45,7 +45,6 @@ dependencies = [
 name = "app"
 version = "0.1.0"
 dependencies = [
- "expo_server_sdk",
  "lib_demo",
  "mockito",
  "reqwest",
@@ -239,19 +238,6 @@ checksum = "a258e46cdc063eb8519c00b9fc845fc47bcfca4130e2f08e88665ceda8474245"
 dependencies = [
  "libc",
  "windows-sys 0.52.0",
-]
-
-[[package]]
-name = "expo_server_sdk"
-version = "0.1.0"
-source = "git+https://github.com/katayama8000/expo-server-sdk-rust/?branch=issue/#fix#c906eb4a5d5e130942de146b6a9f8f5183d5a712"
-dependencies = [
- "mockito",
- "reqwest",
- "serde",
- "serde_json",
- "serde_with",
- "tokio",
 ]
 
 [[package]]
