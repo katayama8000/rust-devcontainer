@@ -1,17 +1,34 @@
-use expo_push_notification_client::{Expo, ExpoClientOptions, ExpoPushMessage};
+use serde::{Deserialize, Serialize};
 
-#[tokio::main]
-async fn main() {
-    let expo_push_tokens = vec![
-        "ExponentPushToken[GG5W7qB0nelNDkz5Y6A0sB]".to_string(),
-        "ExponentPushToken[GG5W7qB0nelNDkz5Y6A0sB]".to_string(),
-    ];
-    let title = "Hello".to_string();
-    let body = "World".to_string();
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+pub struct Data(pub Vec<Item>);
 
-    let expo_message = ExpoPushMessage::new(expo_push_tokens, title, body);
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+#[serde(tag = "type")]
+pub enum Item {
+    #[serde(rename = "number")]
+    Number { x: i64 },
+    #[serde(rename = "string")]
+    String { x: String },
+}
 
-    let expo = Expo::new(ExpoClientOptions { access_token: None });
-    let result = expo.send_push_notifications(expo_message).await;
-    println!("{:?}", result);
+fn main() -> Result<(), Box<dyn std::error::Error>> {
+    let json = r#"
+        [
+            { "type": "string", "x": "abc" },
+            { "type": "number", "x": 100 }
+        ]
+    "#;
+
+    let data: Data = serde_json::from_str(json)?;
+    println!("{:?}", data);
+    println!("{:?}", data.0);
+    for item in data.0 {
+        match item {
+            Item::Number { x } => println!("x is Number({})", x),
+            Item::String { x } => println!("x is String({})", x),
+        }
+    }
+
+    Ok(())
 }
