@@ -1,5 +1,7 @@
+mod generics;
 mod traits;
 
 fn main() {
-    traits::run();
+    // traits::run();
+    generics::run();
 }
