@@ -45,8 +45,6 @@ dependencies = [
 name = "app"
 version = "0.1.0"
 dependencies = [
- "expo_push_notification_client",
- "lib_demo",
  "mockito",
  "reqwest",
  "serde",
@@ -239,19 +237,6 @@ checksum = "a258e46cdc063eb8519c00b9fc845fc47bcfca4130e2f08e88665ceda8474245"
 dependencies = [
  "libc",
  "windows-sys 0.52.0",
-]
-
-[[package]]
-name = "expo_push_notification_client"
-version = "0.1.0"
-source = "git+https://github.com/katayama8000/expo-push-notification-client-rust?branch=rename#a400f528acdd2b7928799d6d0a3aa6cb399e3cd1"
-dependencies = [
- "mockito",
- "reqwest",
- "serde",
- "serde_json",
- "serde_with",
- "tokio",
 ]
 
 [[package]]
@@ -597,12 +582,6 @@ name = "lazy_static"
 version = "1.4.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "e2abad23fbc42b3700f2f279844dc832adb2b2eb069b2df918f455c4e18cc646"
-
-[[package]]
-name = "lib_demo"
-version = "0.1.1"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "d113d34265d0b2675490bff1869766e10811575ce3dc5c9005aedffd71e21b8f"
 
 [[package]]
 name = "libc"
