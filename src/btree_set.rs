@@ -1,4 +1,4 @@
-use std::collections::BTreeSet;
+use std::collections::{BTreeMap, BTreeSet};
 pub fn run() {
     println!(
         "{}{}{}btree_set.rs{}{}{}",
@@ -6,13 +6,14 @@ pub fn run() {
     );
 
     let mut set = BTreeSet::new();
+    set.insert(3);
+    set.insert(4);
     set.insert(1);
-    set.insert(2);
     println!("{:?}", set);
     // append
     let mut set2: BTreeSet<i32> = BTreeSet::new();
-    set2.insert(3);
-    set2.insert(4);
+    set2.insert(1);
+    set2.insert(2);
     println!("{:?}", set2);
     set.append(&mut set2);
     println!("{:?}", set);
@@ -28,6 +29,13 @@ pub fn run() {
     // clear
     set.clear();
     println!("{:?}", set);
+    // BTreeMap
+    let mut map = BTreeMap::new();
+    map.insert(3, "c");
+    map.insert(1, "a");
+    map.insert(2, "b");
+
+    println!("{:?}", map);
 }
 
 // test
