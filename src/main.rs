@@ -1,8 +1,11 @@
+mod as_ref;
 mod box_heap;
 mod btree;
 mod dyn_trait;
+mod from;
 mod generics;
 mod lifetime;
+mod map;
 mod serde;
 mod stack_heap;
 mod trait_obect;
@@ -16,5 +19,8 @@ fn main() {
     // dyn_trait::run();
     // trait_obect::run();
     // serde::run();
-    btree::run();
+    // btree::run();
+    // from::run();
+    // as_ref::run();
+    map::run();
 }
