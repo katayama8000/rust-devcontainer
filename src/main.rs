@@ -2,6 +2,7 @@ mod as_ref;
 mod box_heap;
 mod btree;
 mod dyn_trait;
+mod flatten;
 mod from;
 mod generics;
 mod lifetime;
@@ -26,5 +27,6 @@ fn main() {
     // as_ref::run();
     // map::run();
     // misc::run();
-    thread::run();
+    // thread::run();
+    flatten::run();
 }
