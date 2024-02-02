@@ -6,8 +6,10 @@ mod from;
 mod generics;
 mod lifetime;
 mod map;
+mod misc;
 mod serde;
 mod stack_heap;
+mod thread;
 mod trait_obect;
 mod traits;
 fn main() {
@@ -22,5 +24,7 @@ fn main() {
     // btree::run();
     // from::run();
     // as_ref::run();
-    map::run();
+    // map::run();
+    // misc::run();
+    thread::run();
 }

@@ -1,3 +1,5 @@
+use std::vec;
+
 pub fn run() {
     println!("{}{}{}map.rs{}{}{}", "🦀", "🦀", "🦀", "🦀", "🦀", "🦀");
     let arr = [1, 2, 3];
@@ -12,18 +14,24 @@ pub fn run() {
 
     let arr = [1, 2, 3];
     // make Person from i32
-    let arr2 = arr
-        .iter()
-        .map(|x: &i32| Person::new(*x))
-        .collect::<Vec<_>>();
-    println!("arr2: {:?}", arr2);
+    // let arr2 = arr
+    //     .iter()
+    //     .map(|x: &i32| Person::new(*x))
+    //     .collect::<Vec<_>>();
+    // println!("arr2: {:?}", arr2);
 
     assert_eq!(arr2, arr3);
 
-    let arr = [1, 2, 3];
+    let arr: Vec<Person> = vec![
+        Person::new("John".to_string(), 20),
+        Person::new("John".to_string(), 30),
+        Person::new("John".to_string(), 40),
+    ];
     // make Person from i32
-    let arr2 = arr.into_iter().map(Person::new).collect::<Vec<_>>();
+    // let arr2 = arr.into_iter().map(Person::new).collect::<Vec<_>>();
     // TODO: why work?
+    let arr: Vec<Person> = arr.into_iter().map(Person::new2).collect();
+    println!("arr: {:?}", arr);
 }
 
 #[derive(Debug, PartialEq)]
@@ -42,10 +50,14 @@ impl From<i32> for Person {
 }
 
 impl Person {
-    fn new(name: i32) -> Self {
+    fn new(name: String, age: u8) -> Self {
+        Person { name, age }
+    }
+
+    fn new2(person: Person) -> Self {
         Person {
-            name: "John".to_string(),
-            age: name as u8,
+            name: person.name,
+            age: person.age,
         }
     }
 }
