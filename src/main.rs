@@ -28,5 +28,6 @@ fn main() {
     // map::run();
     // misc::run();
     // thread::run();
-    flatten::run();
+    // flatten::run();
+    generics::run();
 }

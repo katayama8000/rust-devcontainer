@@ -1,4 +1,4 @@
-use std::vec;
+use std::{collections::HashMap, vec};
 
 pub fn run() {
     println!("{}{}{}map.rs{}{}{}", "🦀", "🦀", "🦀", "🦀", "🦀", "🦀");
@@ -32,6 +32,15 @@ pub fn run() {
     // TODO: why work?
     let arr: Vec<Person> = arr.into_iter().map(Person::new2).collect();
     println!("arr: {:?}", arr);
+
+    let v = Some(10);
+    let v2 = v.map(|x| x);
+    let mut hash_map: HashMap<usize, usize> = HashMap::new();
+    hash_map.insert(1, 2);
+    hash_map.insert(2, 3);
+    let val = hash_map.get(&1).map(|x| x * 2);
+    println!("val: {:?}", val);
+    let val = hash_map.entry(1).or_insert(3);
 }
 
 #[derive(Debug, PartialEq)]
