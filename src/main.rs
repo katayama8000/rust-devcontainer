@@ -8,8 +8,10 @@ mod generics;
 mod lifetime;
 mod map;
 mod misc;
+mod reference_counter;
 mod serde;
 mod stack_heap;
+mod str;
 mod thread;
 mod trait_obect;
 mod traits;
@@ -29,5 +31,7 @@ fn main() {
     // misc::run();
     // thread::run();
     // flatten::run();
-    generics::run();
+    // generics::run();
+    // reference_counter::run();
+    str::run();
 }
