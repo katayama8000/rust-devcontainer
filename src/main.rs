@@ -1,11 +1,13 @@
 mod as_ref;
 mod box_heap;
+mod box_list;
 mod btree;
 mod dyn_trait;
 mod flatten;
 mod from;
 mod generics;
 mod lifetime;
+mod macro_echo_num;
 mod map;
 mod misc;
 mod reference_counter;
@@ -33,5 +35,7 @@ fn main() {
     // flatten::run();
     // generics::run();
     // reference_counter::run();
-    str::run();
+    // str::run();
+    // macro_echo_num::run();
+    box_list::run();
 }
