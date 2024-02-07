@@ -10,6 +10,7 @@ mod lifetime;
 mod macro_echo_num;
 mod map;
 mod misc;
+mod ok_or_else;
 mod reference_counter;
 mod serde;
 mod stack_heap;
@@ -17,6 +18,7 @@ mod str;
 mod thread;
 mod trait_obect;
 mod traits;
+mod transpose;
 fn main() {
     // traits::run();
     // generics::run();
@@ -37,5 +39,7 @@ fn main() {
     // reference_counter::run();
     // str::run();
     // macro_echo_num::run();
-    box_list::run();
+    // box_list::run();
+    // transpose::run();
+    ok_or_else::run();
 }
