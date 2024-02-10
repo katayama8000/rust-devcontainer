@@ -1,3 +1,4 @@
+mod arc;
 mod as_ref;
 mod box_heap;
 mod box_list;
@@ -10,8 +11,12 @@ mod lifetime;
 mod macro_echo_num;
 mod map;
 mod misc;
+mod mutex;
 mod ok_or_else;
+mod rc_arc;
+mod ref_cell;
 mod reference_counter;
+mod rw_lock;
 mod serde;
 mod stack_heap;
 mod str;
@@ -41,5 +46,10 @@ fn main() {
     // macro_echo_num::run();
     // box_list::run();
     // transpose::run();
-    ok_or_else::run();
+    // ok_or_else::run();
+    rw_lock::run();
+    // rc_arc::run();
+    // ref_cell::run();
+    // arc::run();
+    // mutex::run();
 }

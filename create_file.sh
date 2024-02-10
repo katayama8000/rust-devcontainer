@@ -8,9 +8,15 @@ fi
 file_name="src/$1.rs"
 main_file="src/main.rs"
 
+# Check if file already exists
+if [ -e "$file_name" ]; then
+  echo "File $file_name already exists. Please choose a different name."
+  exit 1
+fi
+
 # Create the Rust file
 echo "pub fn run() {" > "$file_name"
-echo "    println!(\"{}{}{}$1.rs{}{}{}\", \"🦀\", \"🦀\", \"🦀\", \"🦀\", \"🦀\", \"🦀\");" >> "$file_name"
+echo "    println!(\"$1.rs\");" >> "$file_name"
 echo "}" >> "$file_name"
 echo "Created $file_name"
 
