@@ -26,4 +26,9 @@ pub fn run() {
             None => break,
         }
     }
+
+    // sample Box::pin
+    let pin = Box::pin("hello".to_string());
+    let val = pin.as_ref();
+    println!("{}", val);
 }

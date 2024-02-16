@@ -3,6 +3,7 @@ mod as_ref;
 mod box_heap;
 mod box_list;
 mod btree;
+mod closure;
 mod dyn_trait;
 mod flatten;
 mod from;
@@ -18,6 +19,7 @@ mod ref_cell;
 mod reference_counter;
 mod rw_lock;
 mod serde;
+mod sqlx;
 mod stack_heap;
 mod str;
 mod thread;
@@ -47,9 +49,11 @@ fn main() {
     // box_list::run();
     // transpose::run();
     // ok_or_else::run();
-    rw_lock::run();
+    // rw_lock::run();
     // rc_arc::run();
     // ref_cell::run();
     // arc::run();
     // mutex::run();
+    // closure::run();
+    sqlx::run();
 }
