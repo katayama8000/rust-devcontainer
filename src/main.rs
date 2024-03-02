@@ -19,7 +19,6 @@ mod ref_cell;
 mod reference_counter;
 mod rw_lock;
 mod serde;
-mod sqlx;
 mod stack_heap;
 mod str;
 mod thread;
@@ -33,7 +32,7 @@ fn main() {
     // stack_heap::run();
     // box_heap::run();
     // dyn_trait::run();
-    // trait_obect::run();
+    trait_obect::run();
     // serde::run();
     // btree::run();
     // from::run();
@@ -55,5 +54,4 @@ fn main() {
     // arc::run();
     // mutex::run();
     // closure::run();
-    sqlx::run();
 }

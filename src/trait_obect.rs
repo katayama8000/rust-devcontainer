@@ -3,29 +3,6 @@ trait Article {
     fn show(&self);
 }
 
-// // Box<dyn Article> がトレイトオブジェクト
-// struct User {
-//     articles: Vec<Box<dyn Article>>,
-// }
-
-// impl User {
-//     fn show_all(&self) {
-//         for article in self.articles.iter() {
-//             article.show();
-//         }
-//     }
-// }
-
-// struct TechArticle {
-//     title: String,
-// }
-
-// impl Article for TechArticle {
-//     fn show(&self) {
-//         println!("tech: {}", self.title);
-//     }
-// }
-
 struct User<T: Article> {
     articles: Vec<T>,
 }
@@ -73,19 +50,6 @@ pub fn run() {
         "{}{}{}trait_obect.rs{}{}{}",
         "🦀", "🦀", "🦀", "🦀", "🦀", "🦀"
     );
-
-    // let user = User {
-    //     articles: vec![
-    //         Box::new(TechArticle {
-    //             title: "Rust".to_string(),
-    //         }),
-    //         Box::new(TechArticle {
-    //             title: "Go".to_string(),
-    //         }),
-    //     ],
-    // };
-
-    // user.show_all();
 
     let user: User<Tweet> = User {
         articles: vec![Tweet, Tweet],
