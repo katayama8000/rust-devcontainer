@@ -1,9 +1,12 @@
+mod anyhow;
 mod arc;
 mod as_ref;
 mod box_heap;
 mod box_list;
 mod btree;
 mod closure;
+mod custom_error;
+mod display;
 mod dyn_trait;
 mod flatten;
 mod from;
@@ -32,7 +35,7 @@ fn main() {
     // stack_heap::run();
     // box_heap::run();
     // dyn_trait::run();
-    trait_obect::run();
+    // trait_obect::run();
     // serde::run();
     // btree::run();
     // from::run();
@@ -54,4 +57,7 @@ fn main() {
     // arc::run();
     // mutex::run();
     // closure::run();
+    // anyhow::run();
+    // display::run();
+    custom_error::run();
 }
