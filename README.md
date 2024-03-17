@@ -17,7 +17,7 @@ $ docker-compose exec rust_devcontainer bash
 cargo run
 ```
 
-## make file
+## create a file
 
 ```bash
 sh create_file.sh <file_name>

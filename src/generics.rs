@@ -1,93 +1,70 @@
 pub fn run() {
-    println!(
-        "{}{}{}generics.rs{}{}{}",
-        "🦀", "🦀", "🦀", "🦀", "🦀", "🦀"
-    );
-    let p = Point { x: 5, y: 10.0 };
-    println!("p.x = {}", p.x);
-    println!("p.y = {}", p.y);
-    let line = Line {
-        start: Point { x: 3, y: 4.0 },
-        end: Point { x: 10, y: 15.0 },
-    };
-    println!("line.start.x = {}", line.start.x);
-    println!("line.start.y = {}", line.start.y);
-    println!("line.end.x = {}", line.end.x);
-    println!("line.end.y = {}", line.end.y);
-    let v = Val { val: 3.0 };
-    println!("val = {}", v.value());
-    let v = GenVal {
-        gen_val: Circle { radius: 3.0 },
-    };
-    v.show();
-
-    let v = GenVal::new(Circle { radius: 3.0 }); // Fix: Call new method correctly
-    v.show();
+    println!("generics.rs",);
+    let person = Person::new("John".to_string(), 30);
+    person.get_name();
+    // get_name(person);
+    // get_name_impl(person);
+    // get_name_where(person);
+    println!("{}", person.get_age_type());
 }
 
-struct Point<T, Y> {
-    x: T,
-    y: Y,
+struct Person<T> {
+    name: String,
+    age: T,
 }
 
-struct Line<T, Y>
+impl<T> Person<T> {
+    fn new(name: String, age: T) -> Self {
+        Person { name, age }
+    }
+}
+
+trait GetName {
+    fn get_name(&self) -> &String;
+}
+
+trait GetAge<T> {
+    fn get_age(&self) -> &T;
+}
+
+trait GetAgeType {
+    type Age;
+    fn get_age_type(&self) -> &Self::Age;
+}
+
+impl<T> GetAgeType for Person<T> {
+    type Age = T;
+    fn get_age_type(&self) -> &Self::Age {
+        &self.age
+    }
+}
+
+impl<T> GetAge<T> for Person<T> {
+    fn get_age(&self) -> &T {
+        &self.age
+    }
+}
+
+impl GetName for Person<i32> {
+    fn get_name(&self) -> &String {
+        &self.name
+    }
+}
+
+// トレイト境界サンプル
+fn get_name<T: GetName>(person: T) {
+    println!("{}", person.get_name());
+}
+
+// トレイト境界サンプル where句
+fn get_name_where<T>(person: T)
 where
-    T: Shape,
-    Y: Shape,
+    T: GetName,
 {
-    start: T,
-    end: Y,
+    println!("{}", person.get_name());
 }
 
-trait Shape {
-    fn area(&self) -> f64;
-}
-
-trait Shape2 {
-    fn area(&self) -> String;
-}
-
-impl Shape for Point<i32, f64> {
-    fn area(&self) -> f64 {
-        (self.x as f64) * self.y
-    }
-}
-
-struct Circle {
-    radius: f64,
-}
-
-impl Shape2 for Circle {
-    fn area(&self) -> String {
-        format!("Circle area: {}", 3.14 * self.radius * self.radius)
-    }
-}
-
-struct Val {
-    val: f64,
-}
-
-struct GenVal<T> {
-    gen_val: T,
-}
-
-// impl of Val
-// Valに対してimpl
-impl Val {
-    fn value(&self) -> &f64 {
-        &self.val
-    }
-}
-
-impl<T> GenVal<T>
-where
-    T: Shape2,
-{
-    fn show(&self) {
-        println!("show: {}", self.gen_val.area());
-    }
-
-    fn new(v: T) -> GenVal<T> {
-        GenVal { gen_val: v }
-    }
+// impl
+fn get_name_impl(person: impl GetName) {
+    println!("{}", person.get_name());
 }

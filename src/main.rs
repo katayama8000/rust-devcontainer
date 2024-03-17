@@ -11,12 +11,15 @@ mod dyn_trait;
 mod flatten;
 mod from;
 mod generics;
+mod into;
 mod lifetime;
 mod macro_echo_num;
 mod map;
+mod matches;
 mod misc;
 mod mutex;
 mod ok_or_else;
+mod owned;
 mod rc_arc;
 mod ref_cell;
 mod reference_counter;
@@ -30,7 +33,7 @@ mod traits;
 mod transpose;
 fn main() {
     // traits::run();
-    // generics::run();
+    generics::run();
     // lifetime::run();
     // stack_heap::run();
     // box_heap::run();
@@ -59,5 +62,8 @@ fn main() {
     // closure::run();
     // anyhow::run();
     // display::run();
-    custom_error::run();
+    // custom_error::run();
+    // matches::run();
+    // into::run();
+    // owned::run();
 }
