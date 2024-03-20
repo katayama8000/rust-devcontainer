@@ -6,6 +6,7 @@ mod box_list;
 mod btree;
 mod closure;
 mod custom_error;
+mod custom_error2;
 mod display;
 mod dyn_trait;
 mod flatten;
@@ -32,12 +33,12 @@ mod trait_obect;
 mod traits;
 mod transpose;
 fn main() {
-    // traits::run();
     generics::run();
     // lifetime::run();
     // stack_heap::run();
     // box_heap::run();
     // dyn_trait::run();
+    // traits::run();
     // trait_obect::run();
     // serde::run();
     // btree::run();
@@ -66,4 +67,5 @@ fn main() {
     // matches::run();
     // into::run();
     // owned::run();
+    // custom_error2::run();
 }

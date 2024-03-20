@@ -1,70 +1,62 @@
 pub fn run() {
     println!("generics.rs",);
-    let person = Person::new("John".to_string(), 30);
-    person.get_name();
-    // get_name(person);
-    // get_name_impl(person);
-    // get_name_where(person);
-    println!("{}", person.get_age_type());
+    let p = Point { x: 1, y: 2 };
+    println!("p.x: {}", p.get_x());
+    let p2 = Point2 { x: 1, y: 2.0 };
+    notify(p2);
 }
 
-struct Person<T> {
-    name: String,
-    age: T,
+struct Point<T> {
+    x: T,
+    y: T,
 }
 
-impl<T> Person<T> {
-    fn new(name: String, age: T) -> Self {
-        Person { name, age }
+struct Point2<T, U> {
+    x: T,
+    y: U,
+}
+
+impl<T> Point<T> {
+    fn get_x(&self) -> &T {
+        &self.x
     }
 }
 
-trait GetName {
-    fn get_name(&self) -> &String;
+trait Summary {
+    fn summarize(&self) -> String;
 }
 
-trait GetAge<T> {
-    fn get_age(&self) -> &T;
+trait Summary2 {
+    fn summarize_author(&self) -> String;
 }
 
-trait GetAgeType {
-    type Age;
-    fn get_age_type(&self) -> &Self::Age;
-}
-
-impl<T> GetAgeType for Person<T> {
-    type Age = T;
-    fn get_age_type(&self) -> &Self::Age {
-        &self.age
+impl Summary for Point<i32> {
+    fn summarize(&self) -> String {
+        format!("Point: x={}, y={}", self.x, self.y)
     }
 }
 
-impl<T> GetAge<T> for Person<T> {
-    fn get_age(&self) -> &T {
-        &self.age
+impl Summary2 for Point<f32> {
+    fn summarize_author(&self) -> String {
+        format!("Point: x={}, y={}", self.x, self.y)
     }
 }
 
-impl GetName for Person<i32> {
-    fn get_name(&self) -> &String {
-        &self.name
+impl Summary for Point2<i32, f32> {
+    fn summarize(&self) -> String {
+        format!("Point2: x={}, y={}", self.x, self.y)
     }
 }
 
-// トレイト境界サンプル
-fn get_name<T: GetName>(person: T) {
-    println!("{}", person.get_name());
+impl Summary2 for Point2<i32, f32> {
+    fn summarize_author(&self) -> String {
+        format!("Point2: x={}, y={}", self.x, self.y)
+    }
 }
 
-// トレイト境界サンプル where句
-fn get_name_where<T>(person: T)
+fn notify<T>(item: T)
 where
-    T: GetName,
+    T: Summary + Summary2,
 {
-    println!("{}", person.get_name());
-}
-
-// impl
-fn get_name_impl(person: impl GetName) {
-    println!("{}", person.get_name());
+    println!("notify: {}", item.summarize());
 }
