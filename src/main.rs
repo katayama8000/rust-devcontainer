@@ -33,7 +33,7 @@ mod trait_obect;
 mod traits;
 mod transpose;
 fn main() {
-    generics::run();
+    // generics::run();
     // lifetime::run();
     // stack_heap::run();
     // box_heap::run();
@@ -59,7 +59,7 @@ fn main() {
     // rc_arc::run();
     // ref_cell::run();
     // arc::run();
-    // mutex::run();
+    mutex::run();
     // closure::run();
     // anyhow::run();
     // display::run();
