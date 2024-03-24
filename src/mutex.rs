@@ -1,35 +1,74 @@
-use std::sync::{Arc, Mutex};
-use std::thread;
+use std::{
+    sync::{Arc, Mutex},
+    thread,
+};
 
 pub fn run() {
-    // // 共有される可変なデータを保持するMutexを作成します。
-    // let counter = Arc::new(Mutex::new(0));
+    // run1();
+    // run2();
+    run3();
+}
 
-    // let mut handles = vec![];
+fn run1() {
+    let counter = Arc::new(Mutex::new(0));
+    let mut handles = vec![];
 
-    // for _ in 0..10 {
-    //     // スレッドごとにMutexのクローンを作成し、Arcで共有します。
-    //     let counter = Arc::clone(&counter);
-    //     let handle = thread::spawn(move || {
-    //         // Mutexのロックを取得し、共有データにアクセスします。
-    //         let mut num = counter.lock().unwrap();
-    //         *num += 1;
-    //     });
-    //     handles.push(handle);
-    // }
+    for _ in 0..10 {
+        let counter = Arc::clone(&counter);
+        let handle = thread::spawn(move || {
+            let mut num = counter.lock().unwrap();
+            println!("counter: {:?}", counter);
+            println!("num: {:?}", num);
 
-    // // すべてのスレッドの実行が終了するまで待機します。
-    // for handle in handles {
-    //     handle.join().unwrap();
-    // }
+            // wait for 1 second
+            thread::sleep(std::time::Duration::from_secs(1));
+            *num += 1;
+        });
+        handles.push(handle);
+    }
 
-    // println!("Result: {}", *counter.lock().unwrap());
+    for handle in handles {
+        handle.join().unwrap();
+    }
 
-    let mutex = Mutex::new(0);
-    println!("{:?}", mutex);
-    let mut data = mutex.lock().unwrap();
-    println!("{:?}", data);
-    // update value
-    *data = 1;
-    println!("{:?}", data);
+    println!("Result: {}", *counter.lock().unwrap());
+}
+
+fn run2() {
+    let counter = Arc::new(Mutex::new(0));
+
+    let counter1 = Arc::clone(&counter);
+    let handle1 = thread::spawn(move || {
+        println!("thread1 started");
+        let mut num = counter1.lock().unwrap();
+        println!("counter: {:?}", counter1);
+        println!("num: {:?}", num);
+        *num += 1;
+        drop(num);
+
+        // wait for 3 seconds
+        thread::sleep(std::time::Duration::from_secs(3));
+    });
+
+    let counter2 = Arc::clone(&counter);
+    let handle2 = thread::spawn(move || {
+        println!("thread2 started");
+        let mut num = counter2.lock().unwrap();
+        println!("counter: {:?}", counter2);
+        println!("num: {:?}", num);
+        *num += 1;
+    });
+
+    handle1.join().unwrap();
+    handle2.join().unwrap();
+
+    println!("Result: {}", *counter.lock().unwrap());
+}
+
+fn run3() {
+    // sample of deadlock
+    let counter = Mutex::new(0);
+    let lock1 = counter.lock().unwrap();
+    let lock2 = counter.lock().unwrap();
+    println!("lock: {:?}", lock1);
 }
