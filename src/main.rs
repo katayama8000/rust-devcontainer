@@ -38,7 +38,7 @@ fn main() {
     // stack_heap::run();
     // box_heap::run();
     // dyn_trait::run();
-    // traits::run();
+    traits::run();
     // trait_obect::run();
     // serde::run();
     // btree::run();
@@ -59,7 +59,7 @@ fn main() {
     // rc_arc::run();
     // ref_cell::run();
     // arc::run();
-    mutex::run();
+    // mutex::run();
     // closure::run();
     // anyhow::run();
     // display::run();

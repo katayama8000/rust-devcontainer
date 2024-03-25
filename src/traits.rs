@@ -1,78 +1,53 @@
-use std::str::FromStr;
-
 pub fn run() {
-    println!("{}{}{}traits.rs{}{}{}", "🦀", "🦀", "🦀", "🦀", "🦀", "🦀");
-    Person::new("John", 25);
-    let person = Person::from_str("mike")
-        .map_err(|e| println!("Error: {:?}", e))
-        .expect("person not found");
+    println!("traits.rs");
+    let person = Person {
+        name: "Alice".to_string(),
+    };
 
-    let language = Language::English;
-    let greet = person.greet(language);
-    println!("greet: {}", greet);
+    println!("{}", person.greeting());
 }
 
-#[derive(Debug)]
-enum CustomError {
-    NotFound,
+trait Hello1 {
+    fn hello1(&self) -> String;
+}
+
+trait Hello2 {
+    fn hello2(&self) -> String;
+}
+
+trait Hello3 {
+    fn hello3(&self) -> String;
+}
+
+trait Greeting
+where
+    Self: Hello1 + Hello2 + Hello3,
+{
+    fn greeting(&self) -> String {
+        format!("{} {} {}", self.hello1(), self.hello2(), self.hello3())
+    }
 }
 
 struct Person {
     name: String,
-    age: u8,
 }
 
-impl Person {
-    fn new(name: &str, age: u8) -> Self {
-        Self {
-            name: name.to_string(),
-            age,
-        }
+impl Hello1 for Person {
+    fn hello1(&self) -> String {
+        format!("Hello1, {}", self.name)
     }
 }
 
-impl FromStr for Person {
-    type Err = CustomError;
-    fn from_str(s: &str) -> Result<Self, Self::Err> {
-        if s.is_empty() {
-            return Err(CustomError::NotFound);
-        }
-        let name = s.to_string();
-        let age = 10;
-
-        Ok(Self { name, age })
+impl Hello2 for Person {
+    fn hello2(&self) -> String {
+        format!("Hello2, {}", self.name)
     }
 }
 
-impl TryFrom<&str> for Person {
-    type Error = CustomError;
-    fn try_from(value: &str) -> Result<Self, Self::Error> {
-        if value.is_empty() {
-            return Err(CustomError::NotFound);
-        }
-        let name = value.to_string();
-        let age = 10;
-
-        Ok(Self { name, age })
+impl Hello3 for Person {
+    fn hello3(&self) -> String {
+        format!("Hello3, {}", self.name)
     }
 }
 
-enum Language {
-    English,
-    Spanish,
-    Japanese,
-}
-
-trait Greet {
-    fn greet(&self, language: Language) -> String;
-}
-
-impl Greet for Person {
-    fn greet(&self, language: Language) -> String {
-        match language {
-            Language::English => "Hello".to_string(),
-            Language::Spanish => "Hola".to_string(),
-            Language::Japanese => "こんにちは".to_string(),
-        }
-    }
-}
+impl Greeting for Person {}
