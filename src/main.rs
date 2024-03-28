@@ -1,4 +1,5 @@
 mod anyhow;
+mod api_mock;
 mod arc;
 mod as_ref;
 mod box_heap;
@@ -7,6 +8,7 @@ mod btree;
 mod closure;
 mod custom_error;
 mod custom_error2;
+mod deref;
 mod display;
 mod dyn_trait;
 mod flatten;
@@ -32,13 +34,16 @@ mod thread;
 mod trait_obect;
 mod traits;
 mod transpose;
-fn main() {
+mod r#type;
+
+#[tokio::main]
+async fn main() {
     // generics::run();
     // lifetime::run();
     // stack_heap::run();
     // box_heap::run();
     // dyn_trait::run();
-    traits::run();
+    // traits::run();
     // trait_obect::run();
     // serde::run();
     // btree::run();
@@ -68,4 +73,7 @@ fn main() {
     // into::run();
     // owned::run();
     // custom_error2::run();
+    // deref::run();
+    // r#type::run();
+    api_mock::run().await;
 }
