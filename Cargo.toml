@@ -6,13 +6,13 @@ edition = "2021"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-tokio = {version = "1.35.0", features=["full"]}
+tokio = { version = "1.35.0", features = ["full"] }
 mockito = "1.2.0"
 reqwest = { version = "0.11", features = ["json"] }
-serde = { version ="1.0.193", features = ["derive"]}
+serde = { version = "1.0.193", features = ["derive"] }
 serde_json = "1.0.108"
 serde_derive = "1.0.193"
 serde_with = "3.4.0"
 anyhow = "1.0.80"
 num-traits = "0.2.18"
-
+mockall = "0.12.1"

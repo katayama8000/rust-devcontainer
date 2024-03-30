@@ -51,3 +51,36 @@ impl Client {
         }
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_default() {
+        let my_struct = MyStruct::default();
+        assert_eq!(my_struct.a, 1);
+        assert_eq!(my_struct.b, 2);
+    }
+
+    #[test]
+    fn test_default2() {
+        let my_struct2 = MyStruct2::default();
+        assert_eq!(my_struct2.a, "".to_string());
+        assert_eq!(my_struct2.b, 0.0);
+    }
+
+    #[test]
+    fn test_default3() {
+        let client_options = ClientOptions::default();
+        assert_eq!(client_options.name, None);
+        assert_eq!(client_options.age, None);
+    }
+
+    #[test]
+    fn test_default4() {
+        let client = Client::new(ClientOptions::default());
+        assert_eq!(client.name, "name".to_string());
+        assert_eq!(client.age, 20);
+    }
+}

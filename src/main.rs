@@ -21,6 +21,7 @@ mod macro_echo_num;
 mod map;
 mod matches;
 mod misc;
+mod mock_all;
 mod mutex;
 mod ok_or_else;
 mod owned;
@@ -77,5 +78,6 @@ async fn main() {
     // deref::run();
     // r#type::run();
     // api_mock::run().await;
-    default::run();
+    // default::run();
+    mock_all::run();
 }
