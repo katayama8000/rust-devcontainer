@@ -22,6 +22,6 @@ echo "Created $file_name"
 
 # Add mod statement to main.rs
 if ! grep -q "mod $1;" "$main_file"; then
-  # Insert mod statement before fn main()
-  sed -i "/fn main() {/i mod $1;" "$main_file"
+  # Insert mod statement at the beginning of the file
+  sed -i "1i mod $1;" "$main_file"
 fi

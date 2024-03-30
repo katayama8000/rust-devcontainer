@@ -8,6 +8,7 @@ mod btree;
 mod closure;
 mod custom_error;
 mod custom_error2;
+mod default;
 mod deref;
 mod display;
 mod dyn_trait;
@@ -75,5 +76,6 @@ async fn main() {
     // custom_error2::run();
     // deref::run();
     // r#type::run();
-    api_mock::run().await;
+    // api_mock::run().await;
+    default::run();
 }
