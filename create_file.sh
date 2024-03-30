@@ -25,3 +25,9 @@ if ! grep -q "mod $1;" "$main_file"; then
   # Insert mod statement at the beginning of the file
   sed -i "1i mod $1;" "$main_file"
 fi
+
+main_file="src/main.rs"
+
+sed -i '/^    \/\/ /!s/^    /    \/\/ /' "$main_file"
+
+echo "Commented out all uncommented lines in main function of $main_file"
