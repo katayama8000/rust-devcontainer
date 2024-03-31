@@ -1,6 +1,5 @@
 use mockall::predicate::*;
 use mockall::*;
-use serde::de;
 pub fn run() {
     println!("mock_all.rs");
 
@@ -41,7 +40,9 @@ fn store_todo<T: TodoTrait>(todo: &T, val: Todo) -> u32 {
 
 #[cfg(test)]
 mod tests {
-    use super::*;
+    use mockall::predicate::eq;
+
+    use crate::mock_all::{store_todo, MockTodoTrait, Todo};
 
     #[test]
     fn test_todo() {
@@ -52,7 +53,14 @@ mod tests {
             name: "clean".to_string(),
             is_done: false,
         });
-        todo.expect_store().times(1).returning(|todo| todo.id);
+        todo.expect_store()
+            .with(eq(Todo {
+                id: 1,
+                name: "clean".to_string(),
+                is_done: true,
+            }))
+            .times(1)
+            .returning(|todo| todo.id);
         assert_eq!(
             1,
             store_todo(
