@@ -16,3 +16,7 @@ serde_with = "3.4.0"
 anyhow = "1.0.80"
 num-traits = "0.2.18"
 mockall = "0.12.1"
+
+[package.metadata.scripts]
+run = "cargo run"
+test = "cargo test"
