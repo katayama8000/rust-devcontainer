@@ -8,10 +8,12 @@ mod btree;
 mod closure;
 mod custom_error;
 mod custom_error2;
+mod date;
 mod default;
 mod deref;
 mod display;
 mod dyn_trait;
+mod feature;
 mod flatten;
 mod from;
 mod generics;
@@ -36,6 +38,7 @@ mod thread;
 mod trait_obect;
 mod traits;
 mod transpose;
+mod try_json;
 mod r#type;
 
 #[tokio::main]
@@ -79,5 +82,8 @@ async fn main() {
     // r#type::run();
     // api_mock::run().await;
     // default::run();
-    mock_all::run();
+    // mock_all::run();
+    // try_json::run();
+    // date::run();
+    feature::run();
 }

@@ -20,6 +20,7 @@ trait MyTrait {
     fn foo(&self, x: u32) -> u32;
 }
 
+// ---------------------------- mockall todo ----------------------------
 #[derive(Debug, Clone, PartialEq, Eq)]
 struct Todo {
     id: u32,
@@ -45,19 +46,13 @@ mod tests {
     use crate::mock_all::{store_todo, MockTodoTrait, Todo};
 
     #[test]
-    fn test_todo() {
+    fn test_todo_store() {
         let mut todo = MockTodoTrait::new();
-        todo.expect_delete().times(0).returning(|id| id);
-        todo.expect_load().times(0).returning(|id| Todo {
-            id,
-            name: "clean".to_string(),
-            is_done: false,
-        });
         todo.expect_store()
             .with(eq(Todo {
                 id: 1,
                 name: "clean".to_string(),
-                is_done: true,
+                is_done: false,
             }))
             .times(1)
             .returning(|todo| todo.id);
