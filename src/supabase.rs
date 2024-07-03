@@ -16,5 +16,11 @@ pub async fn run() {
     println!("supabase.rs");
     let supabase_client = initialize_supabase_client().await;
     let response = supabase_client.select("dev_users").execute().await.unwrap();
-    println!("{:?}", response);
+
+    let expo_push_tokens = response
+        .iter()
+        .map(|row| row["expo_push_token"].as_str().unwrap())
+        .collect::<Vec<&str>>();
+    // println!("{:?}", response);
+    println!("{:?}", expo_push_tokens);
 }
