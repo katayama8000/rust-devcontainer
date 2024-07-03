@@ -34,6 +34,7 @@ mod rw_lock;
 mod serde;
 mod stack_heap;
 mod str;
+mod supabase;
 mod thread;
 mod trait_obect;
 mod traits;
@@ -85,5 +86,6 @@ async fn main() {
     // mock_all::run();
     // try_json::run();
     // date::run();
-    feature::run();
+    // feature::run();
+    supabase::run().await;
 }

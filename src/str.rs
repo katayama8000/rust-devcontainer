@@ -21,4 +21,9 @@ pub fn run() {
     s.push_str(" world");
     println!("s: {}", s.len());
     println!("s: {}", s.capacity());
+    // ---
+    let s = "hello";
+    // &str -> String
+    let t = s.to_string();
+    let t = s.to_owned();
 }
