@@ -31,10 +31,12 @@ mod rc_arc;
 mod ref_cell;
 mod reference_counter;
 mod rw_lock;
+mod scrapbox;
 mod serde;
 mod stack_heap;
 mod str;
 mod supabase;
+mod this_error;
 mod thread;
 mod trait_obect;
 mod traits;
@@ -87,5 +89,7 @@ async fn main() {
     // try_json::run();
     // date::run();
     // feature::run();
-    supabase::run().await;
+    // supabase::run().await;
+    // this_error::run();
+    scrapbox::run();
 }

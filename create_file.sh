@@ -18,7 +18,7 @@ fi
 echo "pub fn run() {" > "$file_name"
 echo "    println!(\"$1.rs\");" >> "$file_name"
 echo "}" >> "$file_name"
-echo "Created $file_name"
+echo "👷Created $file_name"
 
 # Add mod statement to main.rs
 if ! grep -q "mod $1;" "$main_file"; then
@@ -30,4 +30,4 @@ main_file="src/main.rs"
 
 sed -i '/^    \/\/ /!s/^    /    \/\/ /' "$main_file"
 
-echo "Commented out all uncommented lines in main function of $main_file"
+echo "🆑Commented out all uncommented lines in main function of $main_file"
