@@ -17,6 +17,7 @@ mod feature;
 mod flatten;
 mod from;
 mod generics;
+mod gyazo;
 mod into;
 mod lifetime;
 mod macro_echo_num;
@@ -91,5 +92,6 @@ async fn main() {
     // feature::run();
     // supabase::run().await;
     // this_error::run();
-    scrapbox::run();
+    // scrapbox::run();
+    gyazo::run().await;
 }

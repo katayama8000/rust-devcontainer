@@ -559,7 +559,7 @@ checksum = "4271d37baee1b8c7e4b708028c57d816cf9d2434acb33a549475f78c181f6253"
 [[package]]
 name = "gyazo_client"
 version = "0.1.0"
-source = "git+https://github.com/katayama8000/gyazo_client_rust?branch=main#b99856d10c89a764e55fa0a20dbdd6941daee973"
+source = "git+https://github.com/katayama8000/gyazo_client_rust?branch=main#f5c5d64cb536f23d2b0041637cac2b23bb8479d8"
 dependencies = [
  "reqwest",
  "serde",

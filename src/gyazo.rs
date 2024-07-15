@@ -1,12 +1,6 @@
 use dotenv::dotenv;
-use gyazo_client::{GyazoClient, UploadParams};
-use reqwest::multipart::{Form, Part};
-use reqwest::Client;
-use serde::Deserialize;
+use gyazo_client::{GyazoClient, UploadParamsBuilder};
 use std::env;
-use std::error::Error;
-use std::fs::File;
-use std::io::Read;
 
 pub async fn run() {
     println!("gyazo.rs");
@@ -17,17 +11,13 @@ pub async fn run() {
 
     let gyazo_client = GyazoClient::new(access_token);
     let image_data = std::fs::read("img/moufu.png").expect("Failed to read file");
-    let upload_params = UploadParams {
-        imagedata: image_data,
-        title: Some("moufu".to_string()),
-        desc: Some("moufu is my cat".to_string()),
-        access_policy: Some("public".to_string()),
-        metadata_is_public: Some("true".to_string()),
-        referer_url: Some("https://example.com".to_string()),
-        app: None,
-        created_at: None,
-        collection_id: None,
-    };
+    let upload_params = UploadParamsBuilder::new(image_data)
+        .title("My Image")
+        .desc("This is a description")
+        .access_policy("anyone")
+        .unwrap()
+        .build()
+        .unwrap();
 
     let upload_response = gyazo_client.upload_image(upload_params).await.unwrap();
     println!("Image uploaded successfully!");
