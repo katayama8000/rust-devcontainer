@@ -1,3 +1,5 @@
+use std::future::Future;
+
 pub fn run() {
     println!("traits.rs");
     let person = Person {
@@ -51,3 +53,18 @@ impl Hello3 for Person {
 }
 
 impl Greeting for Person {}
+
+trait FutureTrait {
+    async fn hello(&self) -> String;
+    fn hello2(&self) -> impl Future<Output = String>;
+}
+
+impl FutureTrait for Person {
+    async fn hello(&self) -> String {
+        format!("Hello, {}", self.name)
+    }
+
+    fn hello2(&self) -> impl Future<Output = String> {
+        async { format!("Hello2, {}", self.name) }
+    }
+}

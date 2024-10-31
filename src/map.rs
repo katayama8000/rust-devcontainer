@@ -41,6 +41,28 @@ pub fn run() {
     let val = hash_map.get(&1).map(|x| x * 2);
     println!("val: {:?}", val);
     let val = hash_map.entry(1).or_insert(3);
+
+    println!("-----");
+    let v: Result<i32, String> = Ok(10);
+    let v2 = v.clone().map(|x| x);
+    // and_then
+    let v_clone = v.clone();
+    let v2 = v.and_then(|x| Ok(x));
+
+    let ret = errable_add(10, 20);
+    let ret = ret.map(|x| {
+        println!("x: {}", x);
+        x
+    });
+    println!("ret: {:?}", ret);
+    // and_then
+    let ret = errable_add(10, 20);
+    let ret = ret.and_then(|x| {
+        println!("x: {}", x);
+        Ok(x)
+    });
+    let optipn_num = Some(10);
+    let ret: Result<i32, String> = optipn_num.ok_or_else(|| "error".to_string());
 }
 
 #[derive(Debug, PartialEq)]
@@ -69,4 +91,43 @@ impl Person {
             age: person.age,
         }
     }
+}
+
+fn errable_add(a: i32, b: i32) -> Result<i32, String> {
+    if a + b > 0 {
+        Ok(a + b)
+    } else {
+        Err("sum is negative".to_string())
+    }
+}
+
+#[derive(Debug)]
+pub struct AppleError(String);
+
+#[derive(Debug)]
+pub struct BananaError(String);
+
+#[derive(Debug)]
+pub enum FruitError {
+    AppleErrorCase(AppleError),
+    BananaErrorCase(BananaError),
+}
+
+#[derive(Debug)]
+pub struct Apple(String);
+#[derive(Debug)]
+pub struct Bananas(String);
+#[derive(Debug)]
+pub struct Cherries(String);
+
+fn function_a(apple: Apple) -> Result<Bananas, AppleError> {
+    Ok(Bananas("Banana".to_string()))
+}
+
+fn function_b(banana: Bananas) -> Result<Cherries, BananaError> {
+    Ok(Cherries("Cherry".to_string()))
+}
+
+fn function_a_with_fruit_error(apple: Apple) -> Result<Bananas, FruitError> {
+    function_a(apple).map_err(|apple_error| FruitError::AppleErrorCase(apple_error))
 }

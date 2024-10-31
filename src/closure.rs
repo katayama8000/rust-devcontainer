@@ -19,6 +19,8 @@ pub fn run() {
     println!("{}", val());
     let closure = |i: i32| i + 1;
     where_1(closure);
+
+    let fun = func;
 }
 
 fn impl_1(vals: Vec<i32>) -> impl Fn() -> i32 {
@@ -30,4 +32,8 @@ where
     F: Fn(i32) -> i32,
 {
     f(1);
+}
+
+fn func() -> i32 {
+    42
 }

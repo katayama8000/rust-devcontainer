@@ -1,5 +1,5 @@
 use dotenv::dotenv;
-use gyazo_client::{GyazoClient, UploadParamsBuilder};
+use gyazo_client::{GyazoClient, GyazoClientOptions, UploadParamsBuilder};
 use std::env;
 
 pub async fn run() {
@@ -9,8 +9,11 @@ pub async fn run() {
     let access_token =
         env::var("GYAZO_ACCESS_TOKEN").expect("GYAZO_ACCESS_TOKEN environment variable is not set");
 
-    let gyazo_client = GyazoClient::new(access_token);
-    let image_data = std::fs::read("img/moufu.png").expect("Failed to read file");
+    let gyazo_client = GyazoClient::new(GyazoClientOptions {
+        access_token,
+        ..Default::default()
+    });
+    let image_data = std::fs::read("img/moufu2.jpg").expect("Failed to read file");
     let upload_params = UploadParamsBuilder::new(image_data)
         .title("My Image")
         .desc("This is a description")
@@ -36,6 +39,10 @@ pub async fn run() {
     }
 
     // delete image
-    let delete_response = gyazo_client.delete_image(image_id).await.unwrap();
-    println!("Image deleted successfully!");
+    // let delete_response = gyazo_client.delete_image(image_id).await.unwrap();
+    // println!("Image deleted successfully!");
+
+    let image_url = "https://gyazo.com/c3569ea30cd93183a76403993fe9d0f4";
+    let oEmbed = gyazo_client.get_oembed(image_url).await.unwrap();
+    print!("oEmbed: {:?}", oEmbed);
 }
