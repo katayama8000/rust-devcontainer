@@ -5,6 +5,7 @@ mod as_ref;
 mod box_heap;
 mod box_list;
 mod btree;
+mod cafe_scraper;
 mod closure;
 mod custom_error;
 mod custom_error2;
@@ -95,5 +96,6 @@ async fn main() {
     // traits::run();
     // transpose::run();
     // try_json::run();
-    expo::run().await;
+    // expo::run().await;
+    cafe_scraper::run().await.unwrap();
 }

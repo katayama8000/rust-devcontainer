@@ -10,6 +10,8 @@ pub fn run() {
 
     let person = Person { age: 32 };
     let age: i32 = person.into();
+
+    let mut h = Height(170);
 }
 
 #[derive(Debug)]
@@ -42,3 +44,6 @@ impl Into<i64> for Person<i32> {
         self.age as i64
     }
 }
+
+struct Height(i64);
+struct Width(i64);
