@@ -30,6 +30,7 @@ mod mock_all;
 mod mutex;
 mod ok_or_else;
 mod owned;
+mod pattern_binding;
 mod rc_arc;
 mod ref_cell;
 mod reference_counter;
@@ -97,5 +98,6 @@ async fn main() {
     // transpose::run();
     // try_json::run();
     // expo::run().await;
-    cafe_scraper::run().await.unwrap();
+    // cafe_scraper::run().await.unwrap();
+    pattern_binding::run();
 }
