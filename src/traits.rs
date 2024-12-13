@@ -1,4 +1,4 @@
-use std::future::Future;
+use std::{future::Future, sync::Arc};
 
 pub fn run() {
     println!("traits.rs");
@@ -68,3 +68,50 @@ impl FutureTrait for Person {
         async { format!("Hello2, {}", self.name) }
     }
 }
+
+trait CircleRepositorty {
+    fn create(&self) -> String;
+    fn update(&self) -> String;
+}
+
+trait HasCircleReposiotry {
+    fn circle_repositorty(&self) -> Arc<dyn CircleRepositorty + Send + Sync>;
+}
+
+trait SquareRepositorty {
+    fn create(&self) -> String;
+    fn update(&self) -> String;
+}
+
+trait HasSquareReposiotry {
+    fn square_repositorty(&self) -> Arc<dyn SquareRepositorty + Send + Sync>;
+}
+
+trait CommandHandler: HasCircleReposiotry + HasSquareReposiotry {
+    fn handle(&self) -> String {
+        format!(
+            "{} {}",
+            self.circle_repositorty().create(),
+            self.square_repositorty().create()
+        )
+    }
+}
+
+struct CommandHandlerImpl {
+    circle_repositorty: Arc<dyn CircleRepositorty + Send + Sync>,
+    square_repositorty: Arc<dyn SquareRepositorty + Send + Sync>,
+}
+
+impl HasCircleReposiotry for CommandHandlerImpl {
+    fn circle_repositorty(&self) -> Arc<dyn CircleRepositorty + Send + Sync> {
+        self.circle_repositorty.clone()
+    }
+}
+
+impl HasSquareReposiotry for CommandHandlerImpl {
+    fn square_repositorty(&self) -> Arc<dyn SquareRepositorty + Send + Sync> {
+        self.square_repositorty.clone()
+    }
+}
+
+impl CommandHandler for CommandHandlerImpl {}

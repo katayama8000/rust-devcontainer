@@ -1,3 +1,4 @@
+workspace = { members = ["restaurant"] }
 [package]
 name = "app"
 version = "0.1.0"
@@ -12,23 +13,24 @@ lib_demo = { git = "https://github.com/katayama8000/crates-publish-minimal", fea
 tokio = { version = "1.42.0", features = ["full"] }
 mockito = "1.6.1"
 reqwest = { version = "0.12.9", features = ["json"] }
-serde = { version = "1.0.215", features = ["derive"] }
+serde = { version = "1.0.216", features = ["derive"] }
 serde_json = "1.0.133"
-serde_derive = "1.0.215"
+serde_derive = "1.0.216"
 serde_with = "3.11.0"
 anyhow = "1.0.94"
 num-traits = "0.2.19"
 mockall = "0.13.1"
-chrono = "0.4.38"
+chrono = "0.4.39"
 chrono-tz = "0.10.0"
 supabase_rs = "0.4.0"
 dotenv = "0.15.0"
-thiserror = "2.0.4"
-scraper = "0.21.0"
+thiserror = "2.0.6"
+scraper = "0.22.0"
 url = "2.5.4"
 percent-encoding = "2.3.1"
 gyazo_client = "0.2.7"
 expo_push_notification_client = { branch = "fix_data_param", git = "https://github.com/katayama8000/expo-push-notification-client-rust" }
+restaurant = { path = "restaurant" }
 
 [package.metadata.scripts]
 run = "cargo run"
