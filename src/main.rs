@@ -37,6 +37,7 @@ mod reference_counter;
 mod rw_lock;
 mod scrapbox;
 mod serde;
+mod spawn;
 mod stack_heap;
 mod str;
 mod supabase;
@@ -99,5 +100,6 @@ async fn main() {
     // try_json::run();
     // expo::run().await;
     // cafe_scraper::run().await.unwrap();
-    pattern_binding::run();
+    // pattern_binding::run();
+    spawn::run()
 }
