@@ -7,6 +7,7 @@ mod box_list;
 mod btree;
 mod cafe_scraper;
 mod closure;
+mod command_query;
 mod custom_error;
 mod custom_error2;
 mod date;
@@ -49,8 +50,8 @@ mod transpose;
 mod try_json;
 mod r#type;
 
-#[tokio::main]
-async fn main() {
+// #[tokio::main]
+fn main() {
     // anyhow::run();
     // api_mock::run().await;
     // arc::run();
@@ -101,5 +102,6 @@ async fn main() {
     // expo::run().await;
     // cafe_scraper::run().await.unwrap();
     // pattern_binding::run();
-    tag::run();
+    // tag::run();
+    command_query::run();
 }
