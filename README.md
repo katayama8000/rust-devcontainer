@@ -22,10 +22,6 @@ $ cargo run
 ```
 
 ```bash
-$ cargo run-script run
-```
-
-```bash
 $ make run
 ```
 

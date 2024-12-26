@@ -40,6 +40,7 @@ mod serde;
 mod stack_heap;
 mod str;
 mod supabase;
+mod tag;
 mod this_error;
 mod thread;
 mod trait_obect;
@@ -99,5 +100,6 @@ async fn main() {
     // try_json::run();
     // expo::run().await;
     // cafe_scraper::run().await.unwrap();
-    pattern_binding::run();
+    // pattern_binding::run();
+    tag::run();
 }
