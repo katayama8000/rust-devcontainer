@@ -21,6 +21,7 @@ mod from;
 mod generics;
 mod gyazo;
 mod into;
+mod iter;
 mod lifetime;
 mod macro_echo_num;
 mod map;
@@ -101,5 +102,6 @@ async fn main() {
     // expo::run().await;
     // cafe_scraper::run().await.unwrap();
     // pattern_binding::run();
-    tag::run();
+    // tag::run();
+    iter::run();
 }
