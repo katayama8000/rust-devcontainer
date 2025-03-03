@@ -1,3 +1,5 @@
+use serde_json::de;
+
 mod anyhow;
 mod api_mock;
 mod arc;
@@ -10,6 +12,7 @@ mod closure;
 mod custom_error;
 mod custom_error2;
 mod date;
+mod dead_lock;
 mod default;
 mod deref;
 mod display;
@@ -103,5 +106,6 @@ async fn main() {
     // cafe_scraper::run().await.unwrap();
     // pattern_binding::run();
     // tag::run();
-    iter::run();
+    // iter::run();
+    dead_lock::run();
 }
