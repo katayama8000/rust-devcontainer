@@ -1,3 +1,4 @@
+mod setlist;
 use serde_json::de;
 
 mod anyhow;
@@ -53,8 +54,8 @@ mod transpose;
 mod try_json;
 mod r#type;
 
-#[tokio::main]
-async fn main() {
+// #[tokio::main]
+fn main() {
     // anyhow::run();
     // api_mock::run().await;
     // arc::run();
@@ -107,5 +108,6 @@ async fn main() {
     // pattern_binding::run();
     // tag::run();
     // iter::run();
-    dead_lock::run();
+    // dead_lock::run();
+    setlist::run().unwrap();
 }

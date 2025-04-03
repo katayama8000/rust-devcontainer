@@ -1,40 +1,39 @@
-workspace = { members = ["hello-wasm", "restaurant"] }
+workspace = { members = ["hello-wasm", "restaurant", "sse"] }
 [package]
 name = "app"
 version = "0.1.0"
 edition = "2021"
 
-# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
-
-[dependencies]
-lib_demo = { git = "https://github.com/katayama8000/crates-publish-minimal", features = [
-    "second",
-], default-features = false }
-tokio = { version = "1.42.0", features = ["full"] }
-mockito = "1.6.1"
-reqwest = { version = "0.12.9", features = ["json"] }
-serde = { version = "1.0.216", features = ["derive"] }
-serde_json = "1.0.133"
-serde_derive = "1.0.216"
-serde_with = "3.11.0"
-anyhow = "1.0.94"
-num-traits = "0.2.19"
-mockall = "0.13.1"
-chrono = "0.4.39"
-chrono-tz = "0.10.0"
-supabase_rs = "0.4.0"
-dotenv = "0.15.0"
-thiserror = "2.0.6"
-scraper = "0.22.0"
-url = "2.5.4"
-percent-encoding = "2.3.1"
-gyazo_client = "0.2.7"
-expo_push_notification_client = { branch = "fix_data_param", git = "https://github.com/katayama8000/expo-push-notification-client-rust" }
-restaurant = { path = "restaurant" }
-
 [package.metadata.scripts]
 run = "cargo run"
 test = "cargo test"
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+anyhow = "1.0.97"
+chrono = "0.4.40"
+chrono-tz = "0.10.3"
+dotenv = "0.15.0"
+expo_push_notification_client = { branch = "fix_data_param", git = "https://github.com/katayama8000/expo-push-notification-client-rust" }
+gyazo_client = "0.2.7"
+lib_demo = { git = "https://github.com/katayama8000/crates-publish-minimal", features = [
+    "second",
+], default-features = false }
+mockall = "0.13.1"
+mockito = "1.7.0"
+num-traits = "0.2.19"
+percent-encoding = "2.3.1"
+reqwest = { version = "0.12.15", features = ["json"] }
+restaurant = { path = "restaurant" }
+scraper = "0.23.1"
+serde = { version = "1.0.219", features = ["derive"] }
+serde_derive = "1.0.216"
+serde_json = "1.0.134"
+serde_with = "3.12.0"
+supabase_rs = "0.4.2"
+thiserror = "2.0.12"
+tokio = { version = "1.44.1", features = ["full"] }
+url = "2.5.4"
 
 [features]
 default = []
