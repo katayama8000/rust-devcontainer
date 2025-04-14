@@ -12,6 +12,8 @@ pub fn run() {
     let age: i32 = person.into();
 
     let mut h = Height(170);
+    let str = String::from("Hello");
+    func(str);
 }
 
 #[derive(Debug)]
@@ -47,3 +49,17 @@ impl Into<i64> for Person<i32> {
 
 struct Height(i64);
 struct Width(i64);
+
+fn func(s: String) {
+    s.bow();
+}
+
+trait StringExt {
+    fn bow(&self) -> String;
+}
+
+impl StringExt for String {
+    fn bow(&self) -> String {
+        format!("{} bow", self)
+    }
+}

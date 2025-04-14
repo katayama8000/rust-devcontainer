@@ -1,3 +1,6 @@
+[profile.dev]
+debug = false
+
 workspace = { members = ["hello-wasm", "restaurant", "sse"] }
 [package]
 name = "app"
