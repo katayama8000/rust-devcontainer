@@ -22,7 +22,7 @@ fn setup_data() -> (UsersTable, CityIndex) {
     let mut index = CityIndex::new();
 
     // データ量を増やしてコスト差をより明確にします（例：1000件）
-    let total_data = 10;
+    let total_data = 1000;
     let cities = vec!["東京", "大阪", "福岡", "札幌"];
     
     for i in 0..total_data {

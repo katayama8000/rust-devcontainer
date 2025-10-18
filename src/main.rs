@@ -54,6 +54,7 @@ mod transpose;
 mod try_json;
 mod r#type;
 mod rdb_index;
+mod rdb_composite_index;
 
 // #[tokio::main]
 fn main() {
@@ -112,5 +113,6 @@ fn main() {
     // dead_lock::run();
     // setlist::run().unwrap();
     rdb_index::run();
+    //rdb_composite_index::run();
     
 }
