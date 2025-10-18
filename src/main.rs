@@ -53,6 +53,7 @@ mod traits;
 mod transpose;
 mod try_json;
 mod r#type;
+mod rdb_index;
 
 // #[tokio::main]
 fn main() {
@@ -109,5 +110,7 @@ fn main() {
     // tag::run();
     // iter::run();
     // dead_lock::run();
-    setlist::run().unwrap();
+    // setlist::run().unwrap();
+    rdb_index::run();
+    
 }
