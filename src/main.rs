@@ -55,6 +55,8 @@ mod rdb_index;
 mod rdb_composite_index;
 mod cardinality_example;
 mod composite_cardinality;
+mod index_shotgun;
+mod ineffective_index;
 
 // #[tokio::main]
 fn main() {
@@ -115,6 +117,8 @@ fn main() {
     // rdb_index::run();
     // rdb_composite_index::run();
     // cardinality_example::run();
-    composite_cardinality::run();
+    // composite_cardinality::run();
+    // index_shotgun::run();
+    ineffective_index::run();
     
 }
