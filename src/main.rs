@@ -1,6 +1,4 @@
 mod setlist;
-use serde_json::de;
-
 mod anyhow;
 mod api_mock;
 mod arc;
@@ -55,6 +53,8 @@ mod try_json;
 mod r#type;
 mod rdb_index;
 mod rdb_composite_index;
+mod cardinality_example;
+mod composite_cardinality;
 
 // #[tokio::main]
 fn main() {
@@ -112,7 +112,9 @@ fn main() {
     // iter::run();
     // dead_lock::run();
     // setlist::run().unwrap();
-    rdb_index::run();
-    //rdb_composite_index::run();
+    // rdb_index::run();
+    // rdb_composite_index::run();
+    // cardinality_example::run();
+    composite_cardinality::run();
     
 }
