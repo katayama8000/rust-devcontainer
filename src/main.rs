@@ -57,6 +57,7 @@ mod cardinality_example;
 mod composite_cardinality;
 mod index_shotgun;
 mod ineffective_index;
+mod sql_viz;
 
 // #[tokio::main]
 fn main() {
@@ -119,6 +120,7 @@ fn main() {
     // cardinality_example::run();
     // composite_cardinality::run();
     // index_shotgun::run();
-    ineffective_index::run();
+    // ineffective_index::run();
+    sql_viz::run();
     
 }
