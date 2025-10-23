@@ -58,6 +58,7 @@ mod composite_cardinality;
 mod index_shotgun;
 mod ineffective_index;
 mod sql_viz;
+mod rdb_icp;
 
 // #[tokio::main]
 fn main() {
@@ -121,6 +122,6 @@ fn main() {
     // composite_cardinality::run();
     // index_shotgun::run();
     // ineffective_index::run();
-    sql_viz::run();
-    
+    // sql_viz::run();
+    rdb_icp::run();
 }
