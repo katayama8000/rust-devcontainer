@@ -75,7 +75,7 @@ flowchart TD
     AddTTL --> AddIP[IPアドレス追加<br/>4バイト]
     AddIP --> SendResponse[UDP で応答送信]
 
-    SearchRecord -->|見つからない| BuildNXDomain[NXDOMAIN 応答構築<br/>flags|=0x0003<br/>ANCOUNT=0]
+    SearchRecord -->|見つからない| BuildNXDomain[NXDOMAIN 応答構築<br/>flags に 0x0003 設定<br/>ANCOUNT=0]
     BuildNXDomain --> SendResponse
 
     SendResponse --> LogComplete[ログ出力:<br/>✅ 応答送信完了]
