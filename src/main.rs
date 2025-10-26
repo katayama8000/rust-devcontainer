@@ -59,6 +59,7 @@ mod index_shotgun;
 mod ineffective_index;
 mod sql_viz;
 mod rdb_icp;
+mod dns_server;
 
 // #[tokio::main]
 fn main() {
@@ -123,5 +124,6 @@ fn main() {
     // index_shotgun::run();
     // ineffective_index::run();
     // sql_viz::run();
-    rdb_icp::run();
+    // rdb_icp::run();
+    dns_server::run();
 }
