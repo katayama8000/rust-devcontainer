@@ -60,6 +60,7 @@ mod ineffective_index;
 mod sql_viz;
 mod rdb_icp;
 mod dns_server;
+mod secondary_index;
 
 // #[tokio::main]
 fn main() {
@@ -125,5 +126,6 @@ fn main() {
     // ineffective_index::run();
     // sql_viz::run();
     // rdb_icp::run();
-    dns_server::run();
+    // dns_server::run();
+    secondary_index::run();
 }
