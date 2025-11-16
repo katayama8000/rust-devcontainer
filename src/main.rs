@@ -61,9 +61,10 @@ mod sql_viz;
 mod rdb_icp;
 mod dns_server;
 mod secondary_index;
+mod mpsc;
 
-// #[tokio::main]
-fn main() {
+ #[tokio::main]
+async fn main() {
     // anyhow::run();
     // api_mock::run().await;
     // arc::run();
@@ -127,5 +128,6 @@ fn main() {
     // sql_viz::run();
     // rdb_icp::run();
     // dns_server::run();
-    secondary_index::run();
+    // secondary_index::run();
+    let _ = mpsc::run().await; // add #[tokio::main] to main function and async to run function
 }
