@@ -114,6 +114,56 @@ cargo lambda deploy --profile personal --iam-role arn:aws:iam::YOUR_ACCOUNT_ID:r
 
 詳細は[Cargo Lambda ドキュメント](https://www.cargo-lambda.info/commands/deploy.html)を参照。
 
+### Function URLの設定
+
+デプロイ後、Lambda関数にHTTPSでアクセスするにはFunction URLを有効にする必要があります。
+
+#### 1. Function URLを作成
+
+```bash
+aws lambda create-function-url-config \
+  --function-name my-rust-lambda \
+  --auth-type NONE \
+  --profile personal
+```
+
+#### 2. パブリックアクセス権限を追加
+
+認証なし（NONE）でアクセスするには、2つの権限が必要です:
+
+```bash
+# InvokeFunction権限を追加
+aws lambda add-permission \
+  --function-name my-rust-lambda \
+  --statement-id AllowPublicInvoke \
+  --action lambda:InvokeFunction \
+  --principal "*" \
+  --profile personal
+
+# InvokeFunctionUrl権限を追加
+aws lambda add-permission \
+  --function-name my-rust-lambda \
+  --statement-id FunctionURLAllowPublicAccess \
+  --action lambda:InvokeFunctionUrl \
+  --principal "*" \
+  --function-url-auth-type NONE \
+  --profile personal
+```
+
+#### 3. 動作確認
+
+```bash
+# Function URLを確認
+aws lambda get-function-url-config \
+  --function-name my-rust-lambda \
+  --profile personal
+
+# アクセステスト
+curl https://YOUR_FUNCTION_URL.lambda-url.ap-northeast-1.on.aws/
+```
+
+成功すると `Hello world, this is an AWS Lambda HTTP request` が返ります。
+
 ## トラブルシューティング
 
 ### Zigが見つからないエラー
