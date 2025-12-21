@@ -8,6 +8,7 @@
     "vscode": {
       "extensions": [
         "GitHub.copilot",
+        "GitHub.copilot-chat",
         "ms-azuretools.vscode-docker",
         "rust-lang.rust-analyzer",
         "tamasfe.even-better-toml",
