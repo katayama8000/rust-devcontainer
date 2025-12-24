@@ -522,6 +522,7 @@ dependencies = [
 name = "my-rust-lambda"
 version = "0.1.0"
 dependencies = [
+ "http",
  "lambda_http",
  "tokio",
 ]
